@@ -11,7 +11,7 @@
 //!
 //! The library does two things:
 //!
-//! - Assist in the construction of a protocol transcript for a public-coin zero-knowledge proof ([`ProverState`]),
+//! - Assist in the construction of a protocol transcript for a public-coin zero-knowledge proof ([`ProverPrivateState`]),
 //! - Assist in the deserialization and verification of a public-coin protocol ([`VerifierState`]).
 //!
 //! The basic idea behind spongefish is that prover and verifier "commit" to the protocol before running the actual protocol.
@@ -51,8 +51,8 @@
 //!
 //! # Protocol transcripts
 //!
-//! Prover and verifier proof transcripts are built respectively with [`ProverState`] and [`VerifierState`].
-//! Given the `DomainSeparator``, it is possible to build a [`ProverState`] instance that can
+//! Prover and verifier proof transcripts are built respectively with [`ProverPrivateState`] and [`VerifierState`].
+//! Given the `DomainSeparator``, it is possible to build a [`ProverPrivateState`] instance that can
 //! build the protocol transcript, and seed the private randomness for the prover.
 //!
 //! ```
@@ -76,7 +76,7 @@
 //! ```
 //!
 //! (Note: spongefish provides aliases [`DefaultHash`] and [`DefaultRng`] mapping to secure hash functions and random number generators).
-//! An [`ProverState`] instance can generate public coins (via a [`StatefulHashObject`] instance) and private coins.
+//! An [`ProverPrivateState`] instance can generate public coins (via a [`StatefulHashObject`] instance) and private coins.
 //! Private coins are generated with a sponge that absorbs whatever the public sponge absorbs, and is seeded by a cryptographic random number generator throughout the protocol by the prover.
 //! This way, it is really hard to produce two different challenges for the same prover message.
 //!

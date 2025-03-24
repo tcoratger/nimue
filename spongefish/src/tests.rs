@@ -19,7 +19,7 @@ fn test_domain_separator() {
     assert!(domain_separator.as_bytes().starts_with(b"example.com"));
 }
 
-/// Test ProverState's rng is not doing completely stupid things.
+/// Test ProverPrivateState's rng is not doing completely stupid things.
 #[test]
 fn test_prover_rng_basic() {
     let domain_separator = DomainSeparator::<Keccak>::new("example.com");

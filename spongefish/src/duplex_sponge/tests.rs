@@ -4,7 +4,7 @@ use crate::duplex_sponge::legacy::DigestBridge;
 use crate::permutations::keccak::Keccak;
 use crate::{
     VerifierMessageBytes, CommonProverMessageBytes, ByteReader, ByteWriter, DuplexInterface, DomainSeparator,
-    ProverState, StatefulHashObject,
+    ProverPrivateState, StatefulHashObject,
 };
 
 type Sha2 = DigestBridge<sha2::Sha256>;
@@ -19,7 +19,7 @@ fn test_domain_separator() {
     assert!(domain_separator.as_bytes().starts_with(b"example.com"));
 }
 
-/// Test ProverState's rng is not doing completely stupid things.
+/// Test ProverPrivateState's rng is not doing completely stupid things.
 #[test]
 fn test_prover_rng_basic() {
     let domain_separator = DomainSeparator::<Keccak>::new("example.com");
@@ -159,7 +159,7 @@ fn test_prover_empty_absorb() {
 /// Absorbs and squeeze over byte-Units should be streamable.
 fn test_streaming_absorb_and_squeeze<H: DuplexInterface>()
 where
-    ProverState<H>: ByteWriter + VerifierMessageBytes,
+    ProverPrivateState<H>: ByteWriter + VerifierMessageBytes,
 {
     let bytes = b"yellow submarine";
 

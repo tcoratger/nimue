@@ -7,12 +7,12 @@ use super::duplex_sponge::DuplexSpongeInterface;
 use super::keccak::Keccak;
 use super::{DefaultHash, DefaultRng, DomainSeparatorMismatch};
 
-/// [`ProverState`] is the prover state in an interactive proof system.
+/// [`ProverPrivateState`] is the prover state in an interactive proof system.
 /// It internally holds the secret coins of the prover for zero-knowledge, and
 /// has the hash function state for the verifier state.
 ///
 /// Unless otherwise specified,
-/// [`ProverState`] is set to work over bytes with [`DefaultHash`] and
+/// [`ProverPrivateState`] is set to work over bytes with [`DefaultHash`] and
 /// rely on the default random number generator [`DefaultRng`].
 pub struct ProverPrivateState<H = DefaultHash, U = u8, R = DefaultRng>
 where
