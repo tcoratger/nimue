@@ -2,7 +2,7 @@ use super::DeserializeField;
 use crate::{ByteReader, DuplexSpongeInterface, ProofError, VerifierState};
 use group::ff::PrimeField;
 
-impl<'a, F, H, const N: usize> DeserializeField<F> for VerifierState<'a, H>
+impl<F, H, const N: usize> DeserializeField<F> for VerifierState<'_, H>
 where
     H: DuplexSpongeInterface,
     F: PrimeField<Repr = [u8; N]>,

@@ -10,7 +10,7 @@ use zeroize::{Zeroize, ZeroizeOnDrop};
 pub type Keccak = DuplexSponge<AlignedKeccakF1600>;
 
 fn transmute_state(st: &mut AlignedKeccakF1600) -> &mut [u64; 25] {
-    unsafe { &mut *(st as *mut AlignedKeccakF1600 as *mut [u64; 25]) }
+    unsafe { &mut *std::ptr::from_mut::<AlignedKeccakF1600>(st).cast::<[u64; 25]>() }
 }
 
 /// This is a wrapper around 200-byte buffer that's always 8-byte aligned

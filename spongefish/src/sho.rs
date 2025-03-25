@@ -23,6 +23,7 @@ where
 impl<U: Unit, H: DuplexSpongeInterface<U>> HashStateWithInstructions<H, U> {
     /// Initialise a stateful hash object,
     /// setting up the state of the sponge function and parsing the tag string.
+    #[must_use]
     pub fn new(domain_separator: &DomainSeparator<H, U>) -> Self {
         let stack = domain_separator.finalize();
         let tag = Self::generate_tag(domain_separator.as_bytes());
@@ -31,11 +32,11 @@ impl<U: Unit, H: DuplexSpongeInterface<U>> HashStateWithInstructions<H, U> {
 
     /// Finish the block and compress the state.
     pub fn ratchet(&mut self) -> Result<(), DomainSeparatorMismatch> {
-        if self.stack.pop_front().unwrap() != Op::Ratchet {
-            Err("Invalid tag".into())
-        } else {
+        if self.stack.pop_front().unwrap() == Op::Ratchet {
             self.ds.ratchet_unchecked();
             Ok(())
+        } else {
+            Err("Invalid tag".into())
         }
     }
 
@@ -138,7 +139,7 @@ impl<U: Unit, H: DuplexSpongeInterface<U>> Drop for HashStateWithInstructions<H,
         // (like another panic) will pollute the traceback.
         // debug_assert!(self.stack.is_empty());
         if !self.stack.is_empty() {
-            log::error!("Unfinished operations:\n {:?}", self.stack)
+            log::error!("Unfinished operations:\n {:?}", self.stack);
         }
         // XXX. is the compiler going to optimize this out?
         self.ds.zeroize();

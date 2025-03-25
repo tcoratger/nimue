@@ -42,7 +42,7 @@ where
 /// it is seeded by a cryptographic random number generator (by default, [`rand::rngs::OsRng`]).
 ///
 /// Every time a challenge is being generated, the private prover sponge is ratcheted, so that it can't be inverted and the randomness recovered.
-pub(crate) struct ProverPrivateRng<R: RngCore + CryptoRng> {
+pub struct ProverPrivateRng<R: RngCore + CryptoRng> {
     /// The duplex sponge that is used to generate the random coins.
     pub(crate) ds: Keccak,
     /// The cryptographic random number generator that seeds the sponge.
@@ -109,7 +109,7 @@ where
     H: DuplexSpongeInterface<U>,
 {
     fn from(domain_separator: &DomainSeparator<H, U>) -> Self {
-        ProverState::new(domain_separator, DefaultRng::default())
+        Self::new(domain_separator, DefaultRng::default())
     }
 }
 
@@ -132,7 +132,6 @@ where
     /// let result = prover_state.add_bytes(b"1tbsp every 10 liters");
     /// assert!(result.is_err())
     /// ```
-    #[inline(always)]
     pub fn add_units(&mut self, input: &[U]) -> Result<(), DomainSeparatorMismatch> {
         let old_len = self.narg_string.len();
         self.hash_state.absorb(input)?;
@@ -144,7 +143,6 @@ where
     }
 
     /// Ratchet the verifier's state.
-    #[inline(always)]
     pub fn ratchet(&mut self) -> Result<(), DomainSeparatorMismatch> {
         self.hash_state.ratchet()
     }
@@ -163,7 +161,6 @@ where
     /// prover_state.rng().fill_bytes(&mut challenges);
     /// assert_ne!(challenges, [0u8; 32]);
     /// ```
-    #[inline(always)]
     pub fn rng(&mut self) -> &mut (impl CryptoRng + RngCore) {
         &mut self.rng
     }
@@ -236,7 +233,6 @@ where
     H: DuplexSpongeInterface<u8>,
     R: RngCore + CryptoRng,
 {
-    #[inline(always)]
     fn add_bytes(&mut self, input: &[u8]) -> Result<(), DomainSeparatorMismatch> {
         self.add_units(input)
     }

@@ -46,7 +46,7 @@ where
 
 /// Sponge operations.
 #[derive(Clone, Copy, PartialEq, Eq, Debug)]
-pub(crate) enum Op {
+pub enum Op {
     /// Indicates absorption of `usize` lanes.
     ///
     /// In a tag, absorb is indicated with 'A'.
@@ -68,16 +68,17 @@ impl Op {
     /// Create a new OP from the portion of a tag.
     fn new(id: char, count: Option<usize>) -> Result<Self, DomainSeparatorMismatch> {
         match (id, count) {
-            ('A', Some(c)) if c > 0 => Ok(Op::Absorb(c)),
-            ('R', None) | ('R', Some(0)) => Ok(Op::Ratchet),
-            ('S', Some(c)) if c > 0 => Ok(Op::Squeeze(c)),
+            ('A', Some(c)) if c > 0 => Ok(Self::Absorb(c)),
+            ('R', None | Some(0)) => Ok(Self::Ratchet),
+            ('S', Some(c)) if c > 0 => Ok(Self::Squeeze(c)),
             _ => Err("Invalid tag".into()),
         }
     }
 }
 
 impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
-    pub fn from_string(io: String) -> Self {
+    #[must_use]
+    pub const fn from_string(io: String) -> Self {
         Self {
             io,
             _hash: PhantomData,
@@ -85,6 +86,7 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
     }
 
     /// Create a new DomainSeparator with the domain separator.
+    #[must_use]
     pub fn new(session_identifier: &str) -> Self {
         assert!(
             !session_identifier.contains(SEP_BYTE),
@@ -94,6 +96,7 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
     }
 
     /// Absorb `count` native elements.
+    #[must_use]
     pub fn absorb(self, count: usize, label: &str) -> Self {
         assert!(count > 0, "Count must be positive.");
         assert!(
@@ -101,17 +104,18 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
             "Label cannot contain the separator BYTE."
         );
         assert!(
-            match label.chars().next() {
-                Some(char) => !char.is_ascii_digit(),
-                None => true,
-            },
+            label
+                .chars()
+                .next()
+                .is_none_or(|char| !char.is_ascii_digit()),
             "Label cannot start with a digit."
         );
 
-        Self::from_string(self.io + SEP_BYTE + &format!("A{}", count) + label)
+        Self::from_string(self.io + SEP_BYTE + &format!("A{count}") + label)
     }
 
     /// Squeeze `count` native elements.
+    #[must_use]
     pub fn squeeze(self, count: usize, label: &str) -> Self {
         assert!(count > 0, "Count must be positive.");
         assert!(
@@ -119,22 +123,24 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
             "Label cannot contain the separator BYTE."
         );
         assert!(
-            match label.chars().next() {
-                Some(char) => !char.is_ascii_digit(),
-                None => true,
-            },
+            label
+                .chars()
+                .next()
+                .is_none_or(|char| !char.is_ascii_digit()),
             "Label cannot start with a digit."
         );
 
-        Self::from_string(self.io + SEP_BYTE + &format!("S{}", count) + label)
+        Self::from_string(self.io + SEP_BYTE + &format!("S{count}") + label)
     }
 
     /// Ratchet the state.
+    #[must_use]
     pub fn ratchet(self) -> Self {
         Self::from_string(self.io + SEP_BYTE + "R")
     }
 
     /// Return the IO Pattern as bytes.
+    #[must_use]
     pub fn as_bytes(&self) -> &[u8] {
         self.io.as_bytes()
     }
@@ -205,11 +211,13 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
     }
 
     /// Create an [`crate::ProverState`] instance from the IO Pattern.
+    #[must_use]
     pub fn to_prover_state(&self) -> crate::ProverState<H, U, crate::DefaultRng> {
         self.into()
     }
 
     /// Create a [`crate::VerifierState`] instance from the IO Pattern and the protocol transcript (bytes).
+    #[must_use]
     pub fn to_verifier_state<'a>(&self, transcript: &'a [u8]) -> crate::VerifierState<'a, H, U> {
         crate::VerifierState::<H, U>::new(self, transcript)
     }

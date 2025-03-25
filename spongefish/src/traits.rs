@@ -33,7 +33,6 @@ pub trait CommonUnitToBytes {
 pub trait UnitToBytes {
     fn fill_challenge_bytes(&mut self, output: &mut [u8]) -> Result<(), DomainSeparatorMismatch>;
 
-    #[inline(always)]
     fn challenge_bytes<const N: usize>(&mut self) -> Result<[u8; N], DomainSeparatorMismatch> {
         let mut output = [0u8; N];
         self.fill_challenge_bytes(&mut output).map(|()| output)
@@ -49,7 +48,6 @@ pub trait ByteTranscript: CommonUnitToBytes + UnitToBytes {}
 pub trait ByteReader {
     fn fill_next_bytes(&mut self, input: &mut [u8]) -> Result<(), DomainSeparatorMismatch>;
 
-    #[inline(always)]
     fn next_bytes<const N: usize>(&mut self) -> Result<[u8; N], DomainSeparatorMismatch> {
         let mut input = [0u8; N];
         self.fill_next_bytes(&mut input).map(|()| input)
@@ -62,7 +60,9 @@ pub trait ByteWriter {
 
 /// Methods for adding bytes to the [`DomainSeparator`](crate::DomainSeparator), properly counting group elements.
 pub trait ByteDomainSeparator {
+    #[must_use]
     fn add_bytes(self, count: usize, label: &str) -> Self;
+    #[must_use]
     fn challenge_bytes(self, count: usize, label: &str) -> Self;
 }
 

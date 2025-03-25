@@ -13,7 +13,11 @@ use ark_ec::{AffineRepr, CurveGroup, VariableBaseMSM};
 use ark_ff::Field;
 use ark_std::log2;
 use rand::rngs::OsRng;
-use spongefish::codecs::arkworks_algebra::*;
+use spongefish::codecs::arkworks_algebra::{
+    CommonGroupToUnit, DeserializeField, DeserializeGroup, DomainSeparator, FieldDomainSeparator,
+    FieldToUnit, GroupDomainSeparator, GroupToUnit, ProofError, ProofResult, ProverState,
+    UnitToField, VerifierState,
+};
 
 /// The IO Pattern of a bulleproof.
 ///
@@ -27,7 +31,7 @@ trait BulletproofDomainSeparator<G: CurveGroup> {
 impl<G> BulletproofDomainSeparator<G> for DomainSeparator
 where
     G: CurveGroup,
-    DomainSeparator: GroupDomainSeparator<G> + FieldDomainSeparator<G::ScalarField>,
+    Self: GroupDomainSeparator<G> + FieldDomainSeparator<G::ScalarField>,
 {
     /// The IO of the bulletproof statement
     fn bulletproof_statement(self) -> Self {
