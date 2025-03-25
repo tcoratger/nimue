@@ -5,8 +5,8 @@ use rand::{CryptoRng, RngCore};
 
 use super::{CommonFieldToUnit, CommonGroupToUnit, FieldToUnit, GroupToUnit};
 use crate::{
-    ByteReader, ByteWriter, CommonUnitToBytes, DomainSeparatorMismatch, DuplexSpongeInterface,
-    ProofResult, ProverState, Unit, UnitTranscript, VerifierState,
+    UnitToBytesDeserialize, UnitToBytesSerialize, CommonUnitToBytes, DomainSeparatorMismatch,
+    DuplexSpongeInterface, ProofResult, ProverState, Unit, UnitTranscript, VerifierState,
 };
 
 impl<F: Field, H: DuplexSpongeInterface, R: RngCore + CryptoRng> FieldToUnit<F>
@@ -66,7 +66,7 @@ where
     }
 }
 
-impl<H, R, C, const N: usize> ByteWriter for ProverState<H, Fp<C, N>, R>
+impl<H, R, C, const N: usize> UnitToBytesSerialize for ProverState<H, Fp<C, N>, R>
 where
     H: DuplexSpongeInterface<Fp<C, N>>,
     C: FpConfig<N>,
@@ -79,7 +79,7 @@ where
     }
 }
 
-impl<H, C, const N: usize> ByteReader for VerifierState<'_, H, Fp<C, N>>
+impl<H, C, const N: usize> UnitToBytesDeserialize for VerifierState<'_, H, Fp<C, N>>
 where
     H: DuplexSpongeInterface<Fp<C, N>>,
     C: FpConfig<N>,
