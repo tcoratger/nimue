@@ -56,7 +56,7 @@ fn test_prover_bytewriter() {
 
 /// A protocol flow that does not match the DomainSeparator should fail.
 #[test]
-fn test_invalid_io_sequence() {
+fn test_invalid_domsep_sequence() {
     let domain_separator = DomainSeparator::new("example.com")
         .absorb(3, "")
         .squeeze(1, "");
@@ -68,7 +68,7 @@ fn test_invalid_io_sequence() {
 // /// A protocol whose IO pattern is not finished should panic.
 // #[test]
 // #[should_panic]
-// fn test_unfinished_io() {
+// fn test_unfinished_domsep() {
 //     let iop = DomainSeparator::new("example.com").absorb(3, "").squeeze(1, "");
 //     let _verifier_challenges = VerifierState::<Keccak>::new(&iop);
 // }
@@ -139,7 +139,7 @@ fn test_transcript_readwrite() {
 /// An IO that is not fully finished should fail.
 #[test]
 #[should_panic]
-fn test_incomplete_io() {
+fn test_incomplete_domsep() {
     let domain_separator = DomainSeparator::<Keccak>::new("domain separator")
         .absorb(10, "hello")
         .squeeze(1, "nop");

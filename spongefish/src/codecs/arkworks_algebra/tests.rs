@@ -25,7 +25,7 @@ fn test_iv_is_used() {
     check_iv_is_used::<DefaultHash, u8>();
 }
 
-fn ark_iopattern<F, H>() -> DomainSeparator<H>
+fn ark_domseppattern<F, H>() -> DomainSeparator<H>
 where
     F: Field,
     H: DuplexSpongeInterface,
@@ -53,7 +53,7 @@ fn test_arkworks_end_to_end<F: Field, H: DuplexSpongeInterface>() -> ProofResult
     let mut f3 = [F::ZERO; 2];
     let mut g3 = [F::ZERO; 2];
 
-    let domain_separator = ark_iopattern::<F, H>();
+    let domain_separator = ark_domseppattern::<F, H>();
 
     let mut prover_state = domain_separator.to_prover_state();
 

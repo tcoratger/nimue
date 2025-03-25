@@ -142,11 +142,11 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
     /// Parse the givern IO Pattern into a sequence of [`Op`]'s.
     pub(crate) fn finalize(&self) -> VecDeque<Op> {
         // Guaranteed to succeed as instances are all valid domain_separators
-        Self::parse_io(self.io.as_bytes())
+        Self::parse_domsep(self.io.as_bytes())
             .expect("Internal error. Please submit issue to m@orru.net")
     }
 
-    fn parse_io(domain_separator: &[u8]) -> Result<VecDeque<Op>, DomainSeparatorMismatch> {
+    fn parse_domsep(domain_separator: &[u8]) -> Result<VecDeque<Op>, DomainSeparatorMismatch> {
         let mut stack = VecDeque::new();
 
         // skip the domain separator

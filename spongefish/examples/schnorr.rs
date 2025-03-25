@@ -31,7 +31,7 @@ trait SchnorrDomainSeparator<G: CurveGroup> {
     /// Add the statement of the Schnorr proof
     fn add_schnorr_statement(self) -> Self;
     /// Add the Schnorr protocol to the IO pattern.
-    fn add_schnorr_io(self) -> Self;
+    fn add_schnorr_domsep(self) -> Self;
 }
 
 impl<G, H> SchnorrDomainSeparator<G> for DomainSeparator<H>
@@ -43,7 +43,7 @@ where
     fn new_schnorr_proof(domsep: &str) -> Self {
         DomainSeparator::new(domsep)
             .add_schnorr_statement()
-            .add_schnorr_io()
+            .add_schnorr_domsep()
     }
 
     fn add_schnorr_statement(self) -> Self {
@@ -52,7 +52,7 @@ where
             .ratchet()
     }
 
-    fn add_schnorr_io(self) -> Self {
+    fn add_schnorr_domsep(self) -> Self {
         self.add_points(1, "commitment (K)")
             .challenge_scalars(1, "challenge (c)")
             .add_scalars(1, "response (r)")

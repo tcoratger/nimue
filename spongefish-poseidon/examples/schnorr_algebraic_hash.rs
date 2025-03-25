@@ -9,7 +9,7 @@ use spongefish::codecs::arkworks_algebra::*;
 /// Extend the IO pattern with the Schnorr protocol.
 trait SchnorrDomainSeparator<G: CurveGroup> {
     /// Adds the entire Schnorr protocol to the IO pattern (statement and proof).
-    fn add_schnorr_io(self) -> Self;
+    fn add_schnorr_domsep(self) -> Self;
 }
 
 impl<G, H, U> SchnorrDomainSeparator<G> for DomainSeparator<H, U>
@@ -19,7 +19,7 @@ where
     H: DuplexSpongeInterface<U>,
     DomainSeparator<H, U>: GroupDomainSeparator<G> + ByteDomainSeparator,
 {
-    fn add_schnorr_io(self) -> Self {
+    fn add_schnorr_domsep(self) -> Self {
         self.add_points(1, "generator (P)")
             .add_points(1, "public key (X)")
             .ratchet()
@@ -138,7 +138,7 @@ fn main() {
 
     // Set up the IO for the protocol transcript with domain separator "spongefish::examples::schnorr"
     let domain_separator = DomainSeparator::<H, U>::new("spongefish::examples::schnorr");
-    let domain_separator = SchnorrDomainSeparator::<G>::add_schnorr_io(domain_separator);
+    let domain_separator = SchnorrDomainSeparator::<G>::add_schnorr_domsep(domain_separator);
 
     // Set up the elements to prove
     let P = G::generator();

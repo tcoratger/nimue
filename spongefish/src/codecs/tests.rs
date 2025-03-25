@@ -101,15 +101,15 @@ where
     let ark_point = ark_generator * ark_scalar;
     let group_point = group_generator * group_scalar;
 
-    let ark_io = ark_domain_separator::<ArkG, Keccak>();
-    let group_io = group_domain_separator::<GroupG, Keccak>();
+    let ark_domsep = ark_domain_separator::<ArkG, Keccak>();
+    let group_domsep = group_domain_separator::<GroupG, Keccak>();
     let mut ark_chal = [0u8; 16];
     let mut group_chal = [0u8; 16];
 
     // Check that the IO Patterns are the same.
-    let mut ark_prover = ark_io.to_prover_state();
-    let mut group_prover = group_io.to_prover_state();
-    assert_eq!(ark_io.as_bytes(), group_io.as_bytes());
+    let mut ark_prover = ark_domsep.to_prover_state();
+    let mut group_prover = group_domsep.to_prover_state();
+    assert_eq!(ark_domsep.as_bytes(), group_domsep.as_bytes());
 
     // Check that scalars absorption leads to the same transcript.
     codecs::arkworks_algebra::FieldToUnit::add_scalars(&mut ark_prover, &[ark_scalar]).unwrap();
