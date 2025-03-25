@@ -5,7 +5,7 @@ use rand::{CryptoRng, RngCore};
 
 use super::{CommonFieldToUnit, CommonGroupToUnit, FieldToUnit, GroupToUnit};
 use crate::{
-    ByteReader, ByteWriter, CommonProverMessageBytes, DomainSeparatorMismatch,
+    ByteReader, ByteWriter, CommonUnitToBytes, DomainSeparatorMismatch,
     DuplexSpongeInterface, ProofResult, ProverState, Unit, UnitTranscript, VerifierState,
 };
 

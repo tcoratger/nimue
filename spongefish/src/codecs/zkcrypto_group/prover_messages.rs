@@ -3,7 +3,7 @@ use rand::{CryptoRng, RngCore};
 
 use super::{CommonFieldToUnit, CommonGroupToUnit, FieldToUnit, GroupToUnit};
 use crate::{
-    ByteWriter, CommonProverMessageBytes, DuplexSpongeInterface, ProofResult, ProverState,
+    ByteWriter, CommonUnitToBytes, DuplexSpongeInterface, ProofResult, ProverState,
 };
 
 impl<F, H, R> FieldToUnit<F> for ProverState<H, u8, R>
@@ -54,7 +54,7 @@ where
 impl<F, T> CommonFieldToUnit<F> for T
 where
     F: PrimeField,
-    T: CommonProverMessageBytes,
+    T: CommonUnitToBytes,
 {
     type Repr = Vec<u8>;
 

@@ -8,8 +8,8 @@ use rand::{CryptoRng, RngCore};
 use super::{CommonFieldToUnit, CommonGroupToUnit, UnitToField};
 use crate::codecs::bytes_uniform_modp;
 use crate::{
-    CommonProverMessageBytes, DomainSeparatorMismatch, DuplexSpongeInterface, ProofError,
-    ProofResult, ProverState, Unit, UnitTranscript, VerifierMessageBytes, VerifierState,
+    CommonUnitToBytes, DomainSeparatorMismatch, DuplexSpongeInterface, ProofError,
+    ProofResult, ProverState, Unit, UnitTranscript, UnitToBytes, VerifierState,
 };
 
 // Implementation of basic traits for bridging arkworks and spongefish
@@ -214,7 +214,7 @@ where
 
 // Field  <-> Bytes interactions:
 
-impl<H, C, const N: usize> CommonProverMessageBytes for VerifierState<'_, H, Fp<C, N>>
+impl<H, C, const N: usize> CommonUnitToBytes for VerifierState<'_, H, Fp<C, N>>
 where
     C: FpConfig<N>,
     H: DuplexSpongeInterface<Fp<C, N>>,
@@ -227,7 +227,7 @@ where
     }
 }
 
-impl<H, R, C, const N: usize> CommonProverMessageBytes for ProverState<H, Fp<C, N>, R>
+impl<H, R, C, const N: usize> CommonUnitToBytes for ProverState<H, Fp<C, N>, R>
 where
     C: FpConfig<N>,
     H: DuplexSpongeInterface<Fp<C, N>>,
@@ -241,7 +241,7 @@ where
     }
 }
 
-impl<H, R, C, const N: usize> VerifierMessageBytes for ProverState<H, Fp<C, N>, R>
+impl<H, R, C, const N: usize> UnitToBytes for ProverState<H, Fp<C, N>, R>
 where
     C: FpConfig<N>,
     H: DuplexSpongeInterface<Fp<C, N>>,
@@ -267,7 +267,7 @@ where
 }
 
 /// XXX. duplicate code
-impl<H, C, const N: usize> VerifierMessageBytes for VerifierState<'_, H, Fp<C, N>>
+impl<H, C, const N: usize> UnitToBytes for VerifierState<'_, H, Fp<C, N>>
 where
     C: FpConfig<N>,
     H: DuplexSpongeInterface<Fp<C, N>>,

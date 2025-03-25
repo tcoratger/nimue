@@ -39,7 +39,7 @@
 //!     x: G::ScalarField,
 //! ) -> ProofResult<&[u8]>
 //! where
-//!     ProverState: GroupToUnit<G> + VerifierMessageBytes,
+//!     ProverState: GroupToUnit<G> + UnitToBytes,
 //! {
 //!     let k = G::ScalarField::rand(prover_state.rng());
 //!     prover_state.add_points(&[G::generator() * k])?;
@@ -101,7 +101,7 @@
 //!     H: DuplexSpongeInterface<U>,
 //!     // ... and the prover to be able to absorb and squeeze elements from the group and the base field.
 //!     // (normally would be the ScalarField but this is to make it work nicely with algebraic hashes)
-//!     ProverState<H, U>: GroupToUnit<G> + FieldToUnit<G::BaseField> + VerifierMessageBytes,
+//!     ProverState<H, U>: GroupToUnit<G> + FieldToUnit<G::BaseField> + UnitToBytes,
 //! {
 //!     let k = G::ScalarField::rand(prover_state.rng());
 //!     prover_state.add_points(&[G::generator() * k])?;

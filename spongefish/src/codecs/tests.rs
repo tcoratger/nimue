@@ -4,7 +4,7 @@ use group::GroupEncoding;
 
 use crate::keccak::Keccak;
 use crate::{codecs, ByteDomainSeparator};
-use crate::{DomainSeparator, DuplexSpongeInterface, VerifierMessageBytes};
+use crate::{DomainSeparator, DuplexSpongeInterface, UnitToBytes};
 
 fn group_domain_separator<G, H>() -> DomainSeparator<H>
 where

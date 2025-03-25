@@ -3,7 +3,7 @@ pub mod keccak;
 
 use spongefish::{
     ByteDomainSeparator, ByteReader, ByteWriter, DuplexSpongeInterface, ProofError, ProofResult,
-    ProverState, Unit, VerifierMessageBytes, VerifierState,
+    ProverState, Unit, UnitToBytes, VerifierState,
 };
 
 /// [`spongefish::DomainSeparator`] for proof-of-work challenges.
@@ -41,7 +41,7 @@ where
     U: Unit,
     H: DuplexSpongeInterface<U>,
     R: rand::CryptoRng + rand::RngCore,
-    ProverState<H, U, R>: ByteWriter + VerifierMessageBytes,
+    ProverState<H, U, R>: ByteWriter + UnitToBytes,
 {
     fn challenge_pow<S: PowStrategy>(&mut self, bits: f64) -> ProofResult<()> {
         let challenge = self.challenge_bytes()?;
@@ -57,7 +57,7 @@ impl<'a, H, U> PoWChallenge for VerifierState<'a, H, U>
 where
     U: Unit,
     H: DuplexSpongeInterface<U>,
-    VerifierState<'a, H, U>: ByteReader + VerifierMessageBytes,
+    VerifierState<'a, H, U>: ByteReader + UnitToBytes,
 {
     fn challenge_pow<S: PowStrategy>(&mut self, bits: f64) -> ProofResult<()> {
         let challenge = self.challenge_bytes()?;

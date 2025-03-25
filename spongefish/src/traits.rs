@@ -19,7 +19,7 @@ pub trait UnitTranscript<U: Unit> {
 ///
 /// For instance, in the case of algebraic sponges operating over a field $\mathbb{F}_p$, we do not expect
 /// the implementation to cache field elements filling $\ceil{\log_2(p)}$ bytes.
-pub trait CommonProverMessageBytes {
+pub trait CommonUnitToBytes {
     fn public_bytes(&mut self, input: &[u8]) -> Result<(), DomainSeparatorMismatch>;
 }
 
@@ -30,7 +30,7 @@ pub trait CommonProverMessageBytes {
 /// and $\mathbb{F}_p$ elements:
 /// - `u8` implementations are assumed to be streaming-friendly, that is: `implementor.fill_challenge_bytes(&mut out[..1]); implementor.fill_challenge_bytes(&mut out[1..]);` is expected to be equivalent to `implementor.fill_challenge_bytes(&mut out);`.
 /// - $\mathbb{F}_p$ implementations are expected to provide no such guarantee. In addition, we expect the implementation to return bytes that are uniformly distributed. In particular, note that the most significant bytes of a $\mod p$ element are not uniformly distributed. The number of bytes good to be used can be discovered playing with [our scripts](https://github.com/arkworks-rs/spongefish/blob/main/scripts/useful_bits_modp.py).
-pub trait VerifierMessageBytes {
+pub trait UnitToBytes {
     fn fill_challenge_bytes(&mut self, output: &mut [u8]) -> Result<(), DomainSeparatorMismatch>;
 
     #[inline(always)]
@@ -43,8 +43,8 @@ pub trait VerifierMessageBytes {
 /// A trait for absorbing and squeezing bytes from a sponge.
 ///
 /// While this trait is trivial for byte-oriented sponges, non-algebraic hashes are tricky.
-/// We point the curious reader to the documentation of [`CommonProverMessageBytes`] and [`VerifierMessageBytes`] for more details.
-pub trait ByteTranscript: CommonProverMessageBytes + VerifierMessageBytes {}
+/// We point the curious reader to the documentation of [`CommonUnitToBytes`] and [`UnitToBytes`] for more details.
+pub trait ByteTranscript: CommonUnitToBytes + UnitToBytes {}
 
 pub trait ByteReader {
     fn fill_next_bytes(&mut self, input: &mut [u8]) -> Result<(), DomainSeparatorMismatch>;
@@ -66,14 +66,14 @@ pub trait ByteDomainSeparator {
     fn challenge_bytes(self, count: usize, label: &str) -> Self;
 }
 
-impl<T: UnitTranscript<u8>> CommonProverMessageBytes for T {
+impl<T: UnitTranscript<u8>> CommonUnitToBytes for T {
     #[inline]
     fn public_bytes(&mut self, input: &[u8]) -> Result<(), DomainSeparatorMismatch> {
         self.public_units(input)
     }
 }
 
-impl<T: UnitTranscript<u8>> VerifierMessageBytes for T {
+impl<T: UnitTranscript<u8>> UnitToBytes for T {
     #[inline]
     fn fill_challenge_bytes(&mut self, output: &mut [u8]) -> Result<(), DomainSeparatorMismatch> {
         self.fill_challenge_units(output)

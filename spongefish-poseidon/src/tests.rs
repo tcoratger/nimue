@@ -14,7 +14,7 @@ where
 #[cfg(feature = "bls12-381")]
 #[test]
 fn test_squeeze_bytes_from_algebraic_hash() {
-    use spongefish::VerifierMessageBytes;
+    use spongefish::UnitToBytes;
 
     type F = ark_bls12_381::Fr;
     type H = crate::bls12_381::Poseidonx5_255_3;
