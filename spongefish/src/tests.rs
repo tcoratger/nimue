@@ -3,7 +3,7 @@ use rand::RngCore;
 use crate::duplex_sponge::legacy::DigestBridge;
 use crate::keccak::Keccak;
 use crate::{
-    ByteReader, ByteWriter, CommonUnitToBytes, DomainSeparator, DuplexSpongeInterface,
+    UnitToBytesDeserialize, UnitToBytesSerialize, CommonUnitToBytes, DomainSeparator, DuplexSpongeInterface,
     HashStateWithInstructions, ProverState, UnitToBytes,
 };
 
@@ -171,7 +171,7 @@ fn test_prover_empty_absorb() {
 /// Absorbs and squeeze over byte-Units should be streamable.
 fn test_streaming_absorb_and_squeeze<H: DuplexSpongeInterface>()
 where
-    ProverState<H>: ByteWriter + UnitToBytes,
+    ProverState<H>: UnitToBytesSerialize + UnitToBytes,
 {
     let bytes = b"yellow submarine";
 
