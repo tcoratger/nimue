@@ -5,8 +5,8 @@ use rand::{CryptoRng, RngCore};
 
 use super::{CommonFieldToUnit, CommonGroupToUnit, FieldToUnit, GroupToUnit};
 use crate::{
-    ByteReader, ByteWriter, CommonUnitToBytes, DomainSeparatorMismatch,
-    DuplexSpongeInterface, ProofResult, ProverState, Unit, UnitTranscript, VerifierState,
+    ByteReader, ByteWriter, CommonUnitToBytes, DomainSeparatorMismatch, DuplexSpongeInterface,
+    ProofResult, ProverState, Unit, UnitTranscript, VerifierState,
 };
 
 impl<F: Field, H: DuplexSpongeInterface, R: RngCore + CryptoRng> FieldToUnit<F>
