@@ -1,5 +1,5 @@
 use crate::{
-    ByteDomainSeparator, ByteReader, ByteWriter, DefaultHash, DomainSeparator,
+    ByteDomainSeparator, UnitToBytesDeserialize, UnitToBytesSerialize, DefaultHash, DomainSeparator,
     DuplexSpongeInterface, ProofResult, Unit, UnitTranscript, UnitToBytes,
 };
 
