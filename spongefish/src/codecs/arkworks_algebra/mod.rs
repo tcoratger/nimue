@@ -10,11 +10,11 @@
 //! ```rust
 //! use ark_ec::CurveGroup;
 //! use ark_std::UniformRand;
-//! use spongefish::{DomainSeparator, ProverPrivateState, DuplexSpongeInterface, ProofResult};
+//! use spongefish::{DomainSeparator, ProverState, DuplexSpongeInterface, ProofResult};
 //! use spongefish::codecs::arkworks_algebra::*;
 //!
 //! fn prove<G: CurveGroup>(
-//!     prover_state: &mut ProverPrivateState,
+//!     prover_state: &mut ProverState,
 //!     x: G::ScalarField,
 //! ) -> ProofResult<&[u8]>
 //! {
@@ -25,21 +25,21 @@
 //!     Ok(prover_state.narg_string())
 //! }
 //! ```
-//! The type constraint on [`ProverPrivateState`][`crate::ProverPrivateState`] hints the compiler that we are going to be absorbing elements from the group `G` and squeezing challenges in the scalar field `G::ScalarField`. Similarly, we could have been squeezing out bytes.
+//! The type constraint on [`ProverState`][`crate::ProverState`] hints the compiler that we are going to be absorbing elements from the group `G` and squeezing challenges in the scalar field `G::ScalarField`. Similarly, we could have been squeezing out bytes.
 //!
 //! ```rust
 //! # use ark_ec::CurveGroup;
 //! # use ark_std::UniformRand;
 //! # use ark_ff::PrimeField;
-//! # use spongefish::{DomainSeparator, ProverPrivateState, DuplexSpongeInterface, ProofResult};
+//! # use spongefish::{DomainSeparator, ProverState, DuplexSpongeInterface, ProofResult};
 //! # use spongefish::codecs::arkworks_algebra::*;
 //!
 //! fn prove<G: CurveGroup>(
-//!     prover_state: &mut ProverPrivateState,
+//!     prover_state: &mut ProverState,
 //!     x: G::ScalarField,
 //! ) -> ProofResult<&[u8]>
 //! where
-//!     ProverPrivateState: GroupToUnit<G> + VerifierMessageBytes,
+//!     ProverState: GroupToUnit<G> + VerifierMessageBytes,
 //! {
 //!     let k = G::ScalarField::rand(prover_state.rng());
 //!     prover_state.add_points(&[G::generator() * k])?;
@@ -50,18 +50,18 @@
 //! }
 //! ```
 //!
-//! [`ProverPrivateState`] is actually more general than this, and can be used with any hash function, over any field.
+//! [`ProverState`] is actually more general than this, and can be used with any hash function, over any field.
 //! Let's for instance use [`sha2`](https://crates.io/crates/sha2) on the above transcript instead of Keccak.
 //!
 //! ```rust
 //! # use ark_ec::CurveGroup;
 //! # use ark_std::UniformRand;
 //! # use ark_ff::PrimeField;
-//! # use spongefish::{DomainSeparator, ProverPrivateState, DuplexSpongeInterface, ProofResult};
+//! # use spongefish::{DomainSeparator, ProverState, DuplexSpongeInterface, ProofResult};
 //! # use spongefish::codecs::arkworks_algebra::*;
 //!
 //! fn prove<G: CurveGroup, H: DuplexSpongeInterface>(
-//!     prover_state: &mut ProverPrivateState<H>,
+//!     prover_state: &mut ProverState<H>,
 //!     x: G::ScalarField,
 //! ) -> ProofResult<&[u8]>
 //! # {
@@ -85,11 +85,11 @@
 //! # use ark_ec::CurveGroup;
 //! # use ark_std::UniformRand;
 //! # use ark_ff::{PrimeField, BigInteger};
-//! # use spongefish::{DomainSeparator, ProverPrivateState, DuplexSpongeInterface, ProofResult};
+//! # use spongefish::{DomainSeparator, ProverState, DuplexSpongeInterface, ProofResult};
 //! # use spongefish::codecs::arkworks_algebra::*;
 //!
 //! fn prove<G, H, U>(
-//!     prover_state: &mut ProverPrivateState<H, U>,
+//!     prover_state: &mut ProverState<H, U>,
 //!     x: G::ScalarField,
 //! ) -> ProofResult<&[u8]>
 //! where
@@ -101,7 +101,7 @@
 //!     H: DuplexSpongeInterface<U>,
 //!     // ... and the prover to be able to absorb and squeeze elements from the group and the base field.
 //!     // (normally would be the ScalarField but this is to make it work nicely with algebraic hashes)
-//!     ProverPrivateState<H, U>: GroupToUnit<G> + FieldToUnit<G::BaseField> + VerifierMessageBytes,
+//!     ProverState<H, U>: GroupToUnit<G> + FieldToUnit<G::BaseField> + VerifierMessageBytes,
 //! {
 //!     let k = G::ScalarField::rand(prover_state.rng());
 //!     prover_state.add_points(&[G::generator() * k])?;
@@ -134,7 +134,7 @@ mod tests;
 pub use crate::traits::*;
 pub use crate::{
     duplex_sponge::Unit, DomainSeparator, DuplexSpongeInterface, HashStateWithInstructions,
-    ProofError, ProofResult, ProverPrivateState, VerifierState,
+    ProofError, ProofResult, ProverState, VerifierState,
 };
 
 super::traits::field_traits!(ark_ff::Field);

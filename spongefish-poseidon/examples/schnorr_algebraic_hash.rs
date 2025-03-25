@@ -39,7 +39,7 @@ fn keygen<G: CurveGroup>() -> (G::ScalarField, G) {
 }
 
 /// The prove algorithm takes as input
-/// - the prover state `ProverPrivateState`, that has access to a random oracle `H` and can absorb/squeeze elements from the group `G`.
+/// - the prover state `ProverState`, that has access to a random oracle `H` and can absorb/squeeze elements from the group `G`.
 /// - The generator `P` in the group.
 /// - the secret key $x \in \mathbb{Z}_p$
 /// It returns a zero-knowledge proof of knowledge of `x` as a sequence of bytes.
@@ -47,7 +47,7 @@ fn keygen<G: CurveGroup>() -> (G::ScalarField, G) {
 fn prove<G, H, U>(
     // the hash function `H` works over bytes.
     // Algebraic hashes over a particular domain can be denoted with an additional type argument implementing `spongefish::Unit`.
-    prover_state: &mut ProverPrivateState<H, U>,
+    prover_state: &mut ProverState<H, U>,
     // the generator
     P: G,
     // the secret key
@@ -58,9 +58,9 @@ where
     G::BaseField: PrimeField,
     H: DuplexSpongeInterface<U>,
     G: CurveGroup,
-    ProverPrivateState<H, U>: GroupToUnit<G> + FieldToUnit<G::BaseField> + VerifierMessageBytes,
+    ProverState<H, U>: GroupToUnit<G> + FieldToUnit<G::BaseField> + VerifierMessageBytes,
 {
-    // `ProverPrivateState` types implement a cryptographically-secure random number generator that is tied to the protocol transcript
+    // `ProverState` types implement a cryptographically-secure random number generator that is tied to the protocol transcript
     // and that can be accessed via the `rng()` function.
     let k = G::ScalarField::rand(prover_state.rng());
     let K = P * k;

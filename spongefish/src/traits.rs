@@ -3,7 +3,7 @@ use crate::Unit;
 
 /// Absorbing and squeezing native elements from the sponge.
 ///
-/// This trait is typically implemented for [`VerifierState`](crate::VerifierState) and [`ProverPrivateState`](crate::ProverPrivateState) instances.
+/// This trait is typically implemented for [`VerifierState`](crate::VerifierState) and [`ProverState`](crate::ProverState) instances.
 /// Implementors of this trait are expected to make sure that the unit type `U` matches
 /// the one used by the internal sponge.
 pub trait UnitTranscript<U: Unit> {

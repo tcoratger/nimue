@@ -6,11 +6,11 @@ use rand::{CryptoRng, RngCore};
 use super::{CommonFieldToUnit, CommonGroupToUnit, FieldToUnit, GroupToUnit};
 use crate::{
     ByteReader, ByteWriter, CommonProverMessageBytes, DomainSeparatorMismatch,
-    DuplexSpongeInterface, ProofResult, ProverPrivateState, Unit, UnitTranscript, VerifierState,
+    DuplexSpongeInterface, ProofResult, ProverState, Unit, UnitTranscript, VerifierState,
 };
 
 impl<F: Field, H: DuplexSpongeInterface, R: RngCore + CryptoRng> FieldToUnit<F>
-    for ProverPrivateState<H, u8, R>
+    for ProverState<H, u8, R>
 {
     fn add_scalars(&mut self, input: &[F]) -> ProofResult<()> {
         let serialized = self.public_scalars(input);
@@ -24,7 +24,7 @@ impl<
         H: DuplexSpongeInterface<Fp<C, N>>,
         R: RngCore + CryptoRng,
         const N: usize,
-    > FieldToUnit<Fp<C, N>> for ProverPrivateState<H, Fp<C, N>, R>
+    > FieldToUnit<Fp<C, N>> for ProverState<H, Fp<C, N>, R>
 {
     fn add_scalars(&mut self, input: &[Fp<C, N>]) -> ProofResult<()> {
         self.public_units(input)?;
@@ -35,12 +35,12 @@ impl<
     }
 }
 
-impl<G, H, R> GroupToUnit<G> for ProverPrivateState<H, u8, R>
+impl<G, H, R> GroupToUnit<G> for ProverState<H, u8, R>
 where
     G: CurveGroup,
     H: DuplexSpongeInterface,
     R: RngCore + CryptoRng,
-    ProverPrivateState<H, u8, R>: CommonGroupToUnit<G, Repr = Vec<u8>>,
+    ProverState<H, u8, R>: CommonGroupToUnit<G, Repr = Vec<u8>>,
 {
     #[inline(always)]
     fn add_points(&mut self, input: &[G]) -> ProofResult<()> {
@@ -51,12 +51,12 @@ where
 }
 
 impl<G, H, R, C: FpConfig<N>, C2: FpConfig<N>, const N: usize> GroupToUnit<G>
-    for ProverPrivateState<H, Fp<C, N>, R>
+    for ProverState<H, Fp<C, N>, R>
 where
     G: CurveGroup<BaseField = Fp<C2, N>>,
     H: DuplexSpongeInterface<Fp<C, N>>,
     R: RngCore + CryptoRng,
-    ProverPrivateState<H, Fp<C, N>, R>: CommonGroupToUnit<G> + FieldToUnit<G::BaseField>,
+    ProverState<H, Fp<C, N>, R>: CommonGroupToUnit<G> + FieldToUnit<G::BaseField>,
 {
     #[inline(always)]
     fn add_points(&mut self, input: &[G]) -> ProofResult<()> {
@@ -68,7 +68,7 @@ where
     }
 }
 
-impl<H, R, C, const N: usize> ByteWriter for ProverPrivateState<H, Fp<C, N>, R>
+impl<H, R, C, const N: usize> ByteWriter for ProverState<H, Fp<C, N>, R>
 where
     H: DuplexSpongeInterface<Fp<C, N>>,
     C: FpConfig<N>,

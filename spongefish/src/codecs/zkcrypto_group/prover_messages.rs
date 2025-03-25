@@ -3,10 +3,10 @@ use rand::{CryptoRng, RngCore};
 
 use super::{CommonFieldToUnit, CommonGroupToUnit, FieldToUnit, GroupToUnit};
 use crate::{
-    ByteWriter, CommonProverMessageBytes, DuplexSpongeInterface, ProofResult, ProverPrivateState,
+    ByteWriter, CommonProverMessageBytes, DuplexSpongeInterface, ProofResult, ProverState,
 };
 
-impl<F, H, R> FieldToUnit<F> for ProverPrivateState<H, u8, R>
+impl<F, H, R> FieldToUnit<F> for ProverState<H, u8, R>
 where
     F: PrimeField,
     H: DuplexSpongeInterface,
@@ -19,7 +19,7 @@ where
     }
 }
 
-impl<G, H, R> CommonGroupToUnit<G> for ProverPrivateState<H, u8, R>
+impl<G, H, R> CommonGroupToUnit<G> for ProverState<H, u8, R>
 where
     G: Group + GroupEncoding,
     G::Repr: AsRef<[u8]>,
@@ -37,7 +37,7 @@ where
     }
 }
 
-impl<G, H, R> GroupToUnit<G> for ProverPrivateState<H, u8, R>
+impl<G, H, R> GroupToUnit<G> for ProverState<H, u8, R>
 where
     G: Group + GroupEncoding,
     G::Repr: AsRef<[u8]>,

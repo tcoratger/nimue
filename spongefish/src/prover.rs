@@ -7,14 +7,21 @@ use super::duplex_sponge::DuplexSpongeInterface;
 use super::keccak::Keccak;
 use super::{DefaultHash, DefaultRng, DomainSeparatorMismatch};
 
-/// [`ProverPrivateState`] is the prover state in an interactive proof system.
-/// It internally holds the secret coins of the prover for zero-knowledge, and
+/// [`ProverState`] is the prover state of an interactive proof (IP) system.
+/// It internally holds the **secret coins** of the prover for zero-knowledge, and
 /// has the hash function state for the verifier state.
 ///
 /// Unless otherwise specified,
-/// [`ProverPrivateState`] is set to work over bytes with [`DefaultHash`] and
+/// [`ProverState`] is set to work over bytes with [`DefaultHash`] and
 /// rely on the default random number generator [`DefaultRng`].
-pub struct ProverPrivateState<H = DefaultHash, U = u8, R = DefaultRng>
+///
+///
+/// # Safety
+///
+/// The prover state is meant to be private in contexts where zero-knowledge is desired.
+/// Leaking the prover state *will* leak the prover's private coins and as such it will compromise the zero-knowledge property.
+/// [`ProverState`] does not implement [`Clone`] or [`Copy`] to prevent accidental leaks.
+pub struct ProverState<H = DefaultHash, U = u8, R = DefaultRng>
 where
     U: Unit,
     H: DuplexSpongeInterface<U>,
@@ -72,7 +79,7 @@ impl<R: RngCore + CryptoRng> RngCore for ProverPrivateRng<R> {
     }
 }
 
-impl<H, U, R> ProverPrivateState<H, U, R>
+impl<H, U, R> ProverState<H, U, R>
 where
     H: DuplexSpongeInterface<U>,
     R: RngCore + CryptoRng,
@@ -96,17 +103,17 @@ where
     }
 }
 
-impl<U, H> From<&DomainSeparator<H, U>> for ProverPrivateState<H, U, DefaultRng>
+impl<U, H> From<&DomainSeparator<H, U>> for ProverState<H, U, DefaultRng>
 where
     U: Unit,
     H: DuplexSpongeInterface<U>,
 {
     fn from(domain_separator: &DomainSeparator<H, U>) -> Self {
-        ProverPrivateState::new(domain_separator, DefaultRng::default())
+        ProverState::new(domain_separator, DefaultRng::default())
     }
 }
 
-impl<H, U, R> ProverPrivateState<H, U, R>
+impl<H, U, R> ProverState<H, U, R>
 where
     U: Unit,
     H: DuplexSpongeInterface<U>,
@@ -180,7 +187,7 @@ where
     }
 }
 
-impl<H, U, R> UnitTranscript<U> for ProverPrivateState<H, U, R>
+impl<H, U, R> UnitTranscript<U> for ProverState<H, U, R>
 where
     U: Unit,
     H: DuplexSpongeInterface<U>,
@@ -213,7 +220,7 @@ where
 
 impl<R: RngCore + CryptoRng> CryptoRng for ProverPrivateRng<R> {}
 
-impl<H, U, R> core::fmt::Debug for ProverPrivateState<H, U, R>
+impl<H, U, R> core::fmt::Debug for ProverState<H, U, R>
 where
     U: Unit,
     H: DuplexSpongeInterface<U>,
@@ -224,7 +231,7 @@ where
     }
 }
 
-impl<H, R> ByteWriter for ProverPrivateState<H, u8, R>
+impl<H, R> ByteWriter for ProverState<H, u8, R>
 where
     H: DuplexSpongeInterface<u8>,
     R: RngCore + CryptoRng,

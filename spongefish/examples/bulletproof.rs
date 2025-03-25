@@ -46,13 +46,13 @@ where
 }
 
 fn prove<'a, G: CurveGroup>(
-    prover_state: &'a mut ProverPrivateState,
+    prover_state: &'a mut ProverState,
     generators: (&[G::Affine], &[G::Affine], &G::Affine),
     statement: &G, // the actual inner-roduct of the witness is not really needed
     witness: (&[G::ScalarField], &[G::ScalarField]),
 ) -> ProofResult<&'a [u8]>
 where
-    ProverPrivateState: GroupToUnit<G> + UnitToField<G::ScalarField>,
+    ProverState: GroupToUnit<G> + UnitToField<G::ScalarField>,
 {
     assert_eq!(witness.0.len(), witness.1.len());
 

@@ -32,7 +32,7 @@ const SEP_BYTE: &str = "\0";
 /// ## Guarantees
 ///
 /// The struct [`DomainSeparator`] guarantees the creation of a valid IO Pattern string, whose lengths are coherent with the types described in the protocol. No information about the types themselves is stored in an IO Pattern.
-/// This means that [`ProverPrivateState`][`crate::ProverPrivateState`] or [`VerifierState`][`crate::VerifierState`] instances can generate successfully a protocol transcript respecting the length constraint but not the types. See [issue #6](https://github.com/arkworks-rs/spongefish/issues/6) for a discussion on the topic.
+/// This means that [`ProverState`][`crate::ProverState`] or [`VerifierState`][`crate::VerifierState`] instances can generate successfully a protocol transcript respecting the length constraint but not the types. See [issue #6](https://github.com/arkworks-rs/spongefish/issues/6) for a discussion on the topic.
 
 #[derive(Clone)]
 pub struct DomainSeparator<H = crate::DefaultHash, U = u8>
@@ -204,8 +204,8 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
         }
     }
 
-    /// Create an [`crate::ProverPrivateState`] instance from the IO Pattern.
-    pub fn to_prover_state(&self) -> crate::ProverPrivateState<H, U, crate::DefaultRng> {
+    /// Create an [`crate::ProverState`] instance from the IO Pattern.
+    pub fn to_prover_state(&self) -> crate::ProverState<H, U, crate::DefaultRng> {
         self.into()
     }
 

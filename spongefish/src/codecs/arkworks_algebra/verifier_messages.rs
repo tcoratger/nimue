@@ -9,7 +9,7 @@ use super::{CommonFieldToUnit, CommonGroupToUnit, UnitToField};
 use crate::codecs::bytes_uniform_modp;
 use crate::{
     CommonProverMessageBytes, DomainSeparatorMismatch, DuplexSpongeInterface, ProofError,
-    ProofResult, ProverPrivateState, Unit, UnitTranscript, VerifierMessageBytes, VerifierState,
+    ProofResult, ProverState, Unit, UnitTranscript, VerifierMessageBytes, VerifierState,
 };
 
 // Implementation of basic traits for bridging arkworks and spongefish
@@ -107,7 +107,7 @@ where
     }
 }
 
-impl<H, C, R, const N: usize> UnitToField<Fp<C, N>> for ProverPrivateState<H, Fp<C, N>, R>
+impl<H, C, R, const N: usize> UnitToField<Fp<C, N>> for ProverState<H, Fp<C, N>, R>
 where
     C: FpConfig<N>,
     H: DuplexSpongeInterface<Fp<C, N>>,
@@ -121,7 +121,7 @@ where
 
 // Field <-> Field interactions:
 
-impl<F, H, R, C, const N: usize> CommonFieldToUnit<F> for ProverPrivateState<H, Fp<C, N>, R>
+impl<F, H, R, C, const N: usize> CommonFieldToUnit<F> for ProverState<H, Fp<C, N>, R>
 where
     F: Field<BasePrimeField = Fp<C, N>>,
     H: DuplexSpongeInterface<Fp<C, N>>,
@@ -177,7 +177,7 @@ where
     }
 }
 
-impl<H, R, C, const N: usize, G> CommonGroupToUnit<G> for ProverPrivateState<H, Fp<C, N>, R>
+impl<H, R, C, const N: usize, G> CommonGroupToUnit<G> for ProverState<H, Fp<C, N>, R>
 where
     C: FpConfig<N>,
     R: RngCore + CryptoRng,
@@ -227,7 +227,7 @@ where
     }
 }
 
-impl<H, R, C, const N: usize> CommonProverMessageBytes for ProverPrivateState<H, Fp<C, N>, R>
+impl<H, R, C, const N: usize> CommonProverMessageBytes for ProverState<H, Fp<C, N>, R>
 where
     C: FpConfig<N>,
     H: DuplexSpongeInterface<Fp<C, N>>,
@@ -241,7 +241,7 @@ where
     }
 }
 
-impl<H, R, C, const N: usize> VerifierMessageBytes for ProverPrivateState<H, Fp<C, N>, R>
+impl<H, R, C, const N: usize> VerifierMessageBytes for ProverState<H, Fp<C, N>, R>
 where
     C: FpConfig<N>,
     H: DuplexSpongeInterface<Fp<C, N>>,
