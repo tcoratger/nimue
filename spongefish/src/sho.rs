@@ -138,7 +138,10 @@ impl<U: Unit, H: DuplexSpongeInterface<U>> Drop for HashStateWithInstructions<H,
         // (like another panic) will pollute the traceback.
         // debug_assert!(self.stack.is_empty());
         if !self.stack.is_empty() {
-            log::error!("Unfinished operations:\n {:?}", self.stack)
+            eprintln!(
+                "HashStateWithInstructions dropped with unfinished operations:\n{:?}",
+                self.stack
+            );
         }
         // XXX. is the compiler going to optimize this out?
         self.ds.zeroize();
