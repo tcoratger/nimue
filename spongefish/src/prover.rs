@@ -1,7 +1,7 @@
 use rand::{CryptoRng, RngCore};
 
 use crate::duplex_sponge::Unit;
-use crate::{UnitToBytesSerialize, DomainSeparator, HashStateWithInstructions, UnitTranscript};
+use crate::{DomainSeparator, HashStateWithInstructions, UnitToBytesSerialize, UnitTranscript};
 
 use super::duplex_sponge::DuplexSpongeInterface;
 use super::keccak::Keccak;

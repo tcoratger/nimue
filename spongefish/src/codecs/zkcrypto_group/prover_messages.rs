@@ -3,7 +3,7 @@ use rand::{CryptoRng, RngCore};
 
 use super::{CommonFieldToUnit, CommonGroupToUnit, FieldToUnit, GroupToUnit};
 use crate::{
-    UnitToBytesSerialize, CommonUnitToBytes, DuplexSpongeInterface, ProofResult, ProverState,
+    CommonUnitToBytes, DuplexSpongeInterface, ProofResult, ProverState, UnitToBytesSerialize,
 };
 
 impl<F, H, R> FieldToUnit<F> for ProverState<H, u8, R>

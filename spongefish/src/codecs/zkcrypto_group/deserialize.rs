@@ -1,5 +1,5 @@
 use super::DeserializeField;
-use crate::{UnitToBytesDeserialize, DuplexSpongeInterface, ProofError, VerifierState};
+use crate::{DuplexSpongeInterface, ProofError, UnitToBytesDeserialize, VerifierState};
 use group::ff::PrimeField;
 
 impl<'a, F, H, const N: usize> DeserializeField<F> for VerifierState<'a, H>

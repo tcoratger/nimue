@@ -2,8 +2,8 @@ pub mod blake3;
 pub mod keccak;
 
 use spongefish::{
-    ByteDomainSeparator, UnitToBytesDeserialize, UnitToBytesSerialize, DuplexSpongeInterface, ProofError, ProofResult,
-    ProverState, Unit, UnitToBytes, VerifierState,
+    ByteDomainSeparator, DuplexSpongeInterface, ProofError, ProofResult, ProverState, Unit,
+    UnitToBytes, UnitToBytesDeserialize, UnitToBytesSerialize, VerifierState,
 };
 
 /// [`spongefish::DomainSeparator`] for proof-of-work challenges.
