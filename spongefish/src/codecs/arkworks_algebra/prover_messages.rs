@@ -3,13 +3,13 @@ use ark_ff::{Field, Fp, FpConfig};
 use ark_serialize::CanonicalSerialize;
 use rand::{CryptoRng, RngCore};
 
-use super::{CommonFieldToUnit, CommonGroupToUnit, FieldToUnit, GroupToUnit};
+use super::{CommonFieldToUnit, CommonGroupToUnit, FieldToUnitSerialize, GroupToUnitSerialize};
 use crate::{
-    CommonUnitToBytes, DomainSeparatorMismatch, DuplexSpongeInterface, ProofResult, ProverState,
-    Unit, UnitToBytesDeserialize, UnitToBytesSerialize, UnitTranscript, VerifierState,
+    BytesToUnitDeserialize, BytesToUnitSerialize, CommonUnitToBytes, DomainSeparatorMismatch,
+    DuplexSpongeInterface, ProofResult, ProverState, Unit, UnitTranscript, VerifierState,
 };
 
-impl<F: Field, H: DuplexSpongeInterface, R: RngCore + CryptoRng> FieldToUnit<F>
+impl<F: Field, H: DuplexSpongeInterface, R: RngCore + CryptoRng> FieldToUnitSerialize<F>
     for ProverState<H, u8, R>
 {
     fn add_scalars(&mut self, input: &[F]) -> ProofResult<()> {
@@ -24,7 +24,7 @@ impl<
         H: DuplexSpongeInterface<Fp<C, N>>,
         R: RngCore + CryptoRng,
         const N: usize,
-    > FieldToUnit<Fp<C, N>> for ProverState<H, Fp<C, N>, R>
+    > FieldToUnitSerialize<Fp<C, N>> for ProverState<H, Fp<C, N>, R>
 {
     fn add_scalars(&mut self, input: &[Fp<C, N>]) -> ProofResult<()> {
         self.public_units(input)?;
@@ -35,7 +35,7 @@ impl<
     }
 }
 
-impl<G, H, R> GroupToUnit<G> for ProverState<H, u8, R>
+impl<G, H, R> GroupToUnitSerialize<G> for ProverState<H, u8, R>
 where
     G: CurveGroup,
     H: DuplexSpongeInterface,
@@ -49,13 +49,13 @@ where
     }
 }
 
-impl<G, H, R, C: FpConfig<N>, C2: FpConfig<N>, const N: usize> GroupToUnit<G>
+impl<G, H, R, C: FpConfig<N>, C2: FpConfig<N>, const N: usize> GroupToUnitSerialize<G>
     for ProverState<H, Fp<C, N>, R>
 where
     G: CurveGroup<BaseField = Fp<C2, N>>,
     H: DuplexSpongeInterface<Fp<C, N>>,
     R: RngCore + CryptoRng,
-    Self: CommonGroupToUnit<G> + FieldToUnit<G::BaseField>,
+    Self: CommonGroupToUnit<G> + FieldToUnitSerialize<G::BaseField>,
 {
     fn add_points(&mut self, input: &[G]) -> ProofResult<()> {
         self.public_points(input).map(|_| ())?;
@@ -66,7 +66,7 @@ where
     }
 }
 
-impl<H, R, C, const N: usize> UnitToBytesSerialize for ProverState<H, Fp<C, N>, R>
+impl<H, R, C, const N: usize> BytesToUnitSerialize for ProverState<H, Fp<C, N>, R>
 where
     H: DuplexSpongeInterface<Fp<C, N>>,
     C: FpConfig<N>,
@@ -79,7 +79,7 @@ where
     }
 }
 
-impl<H, C, const N: usize> UnitToBytesDeserialize for VerifierState<'_, H, Fp<C, N>>
+impl<H, C, const N: usize> BytesToUnitDeserialize for VerifierState<'_, H, Fp<C, N>>
 where
     H: DuplexSpongeInterface<Fp<C, N>>,
     C: FpConfig<N>,
