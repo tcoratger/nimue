@@ -1,6 +1,6 @@
 use crate::{
     ByteDomainSeparator, ByteReader, ByteWriter, DefaultHash, DomainSeparator,
-    DuplexSpongeInterface, ProofResult, Unit, UnitTranscript, UnitToBytes,
+    DuplexSpongeInterface, ProofResult, Unit, UnitToBytes, UnitTranscript,
 };
 
 use ark_ff::Field;

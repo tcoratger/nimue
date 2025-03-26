@@ -20,8 +20,8 @@
 /// It can be used to verify a proof.
 use ark_ec::{CurveGroup, PrimeGroup};
 use ark_std::UniformRand;
-use spongefish::codecs::arkworks_algebra::*;
 use rand::rngs::OsRng;
+use spongefish::codecs::arkworks_algebra::*;
 
 /// Extend the IO pattern with the Schnorr protocol.
 trait SchnorrDomainSeparator<G: CurveGroup> {
@@ -164,7 +164,8 @@ fn main() {
     // type H = spongefish::hash::legacy::DigestBridge<sha2::Sha256>;
 
     // Set up the IO for the protocol transcript with domain separator "spongefish::examples::schnorr"
-    let io: DomainSeparator<H> = SchnorrDomainSeparator::<G>::new_schnorr_proof("spongefish::example");
+    let io: DomainSeparator<H> =
+        SchnorrDomainSeparator::<G>::new_schnorr_proof("spongefish::example");
 
     // Set up the elements to prove
     let P = G::generator();

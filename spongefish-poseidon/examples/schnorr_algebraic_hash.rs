@@ -101,8 +101,7 @@ where
     G::BaseField: PrimeField,
     G: CurveGroup,
     H: DuplexSpongeInterface<U>,
-    VerifierState<'a, H, U>:
-        DeserializeGroup<G> + DeserializeField<G::BaseField> + UnitToBytes,
+    VerifierState<'a, H, U>: DeserializeGroup<G> + DeserializeField<G::BaseField> + UnitToBytes,
 {
     // Read the protocol from the transcript:
     let [K] = verifier_state.next_points()?;
