@@ -83,7 +83,7 @@ impl<U: Unit, C: Permutation<U = U>> DuplexSpongeInterface<U> for DuplexSponge<C
                 self.permutation.permute();
                 self.absorb_pos = 0;
             } else {
-                assert!(!input.is_empty() && self.absorb_pos < C::R);
+                assert!(&&self.absorb_pos < C::R);
                 let chunk_len = usize::min(input.len(), C::R - self.absorb_pos);
                 let (chunk, rest) = input.split_at(chunk_len);
 
@@ -108,7 +108,7 @@ impl<U: Unit, C: Permutation<U = U>> DuplexSpongeInterface<U> for DuplexSponge<C
             self.permutation.permute();
         }
 
-        assert!(self.squeeze_pos < C::R && !output.is_empty());
+        assert!(self.squeeze_pos < C::R);
         let chunk_len = usize::min(output.len(), C::R - self.squeeze_pos);
         let (output, rest) = output.split_at_mut(chunk_len);
         output.clone_from_slice(
@@ -126,7 +126,7 @@ impl<U: Unit, C: Permutation<U = U>> DuplexSpongeInterface<U> for DuplexSponge<C
         self.permutation.permute();
         // set to zero the state up to rate
         // XXX. is the compiler really going to do this?
-        self.permutation.as_mut()[0..C::R]
+        self.permutation.as_mut()[..C::R]
             .iter_mut()
             .for_each(Zeroize::zeroize);
         self.squeeze_pos = C::R;
