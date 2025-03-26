@@ -42,6 +42,7 @@ fn keygen<G: CurveGroup>() -> (G::ScalarField, G) {
 /// - the prover state `ProverState`, that has access to a random oracle `H` and can absorb/squeeze elements from the group `G`.
 /// - The generator `P` in the group.
 /// - the secret key $x \in \mathbb{Z}_p$
+///
 /// It returns a zero-knowledge proof of knowledge of `x` as a sequence of bytes.
 #[allow(non_snake_case)]
 fn prove<G, H, U>(
@@ -58,7 +59,7 @@ where
     G::BaseField: PrimeField,
     H: DuplexSpongeInterface<U>,
     G: CurveGroup,
-    ProverState<H, U>: GroupToUnit<G> + FieldToUnit<G::BaseField> + UnitToBytes,
+    ProverState<H, U>: GroupToUnitSerialize<G> + FieldToUnitSerialize<G::BaseField> + UnitToBytes,
 {
     // `ProverState` types implement a cryptographically-secure random number generator that is tied to the protocol transcript
     // and that can be accessed via the `rng()` function.
@@ -85,6 +86,7 @@ where
 /// The verify algorithm takes as input
 /// - the verifier state `VerifierState`, that has access to a random oracle `H` and can deserialize/squeeze elements from the group `G`.
 /// - the secret key `witness`
+///
 /// It returns a zero-knowledge proof of knowledge of `witness` as a sequence of bytes.
 #[allow(non_snake_case)]
 fn verify<'a, G, H, U>(
@@ -101,7 +103,8 @@ where
     G::BaseField: PrimeField,
     G: CurveGroup,
     H: DuplexSpongeInterface<U>,
-    VerifierState<'a, H, U>: DeserializeGroup<G> + DeserializeField<G::BaseField> + UnitToBytes,
+    VerifierState<'a, H, U>:
+        GroupToUnitDeserialize<G> + FieldToUnitDeserialize<G::BaseField> + UnitToBytes,
 {
     // Read the protocol from the transcript:
     let [K] = verifier_state.next_points()?;
@@ -153,7 +156,7 @@ fn main() {
     println!("Here's a Schnorr signature:\n{}", hex::encode(proof));
 
     // Verify the proof: create the verifier transcript, add the statement to it, and invoke the verifier.
-    let mut verifier_state = VerifierState::<H, U>::new(&domain_separator, &proof);
+    let mut verifier_state = VerifierState::<H, U>::new(&domain_separator, proof);
     verifier_state.public_points(&[P, X]).unwrap();
     verifier_state.ratchet().unwrap();
     verify(&mut verifier_state, P, X).expect("Invalid proof");

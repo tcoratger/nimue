@@ -6,6 +6,9 @@ description = "A library for Fiat-Shamir transcripts."
 edition = "2021"
 license = "BSD-3-Clause"
 
+[lints]
+workspace = true
+
 [dependencies]
 zeroize = { workspace = true, features = ["zeroize_derive"] }
 rand = { workspace = true, features = ["getrandom"] }
@@ -59,7 +62,3 @@ required-features = ["arkworks-algebra"]
 [[example]]
 name = "bulletproof"
 required-features = ["arkworks-algebra"]
-
-[lints.clippy]
-too_long_first_doc_paragraph = "allow"
-doc_lazy_continuation = "allow"

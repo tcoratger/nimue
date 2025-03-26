@@ -2,7 +2,7 @@ use crate::domain_separator::DomainSeparator;
 use crate::duplex_sponge::{DuplexSpongeInterface, Unit};
 use crate::errors::DomainSeparatorMismatch;
 use crate::sho::HashStateWithInstructions;
-use crate::traits::{UnitToBytesDeserialize, UnitTranscript};
+use crate::traits::{BytesToUnitDeserialize, UnitTranscript};
 use crate::DefaultHash;
 
 /// [`VerifierState`] is the verifier state.
@@ -36,6 +36,7 @@ impl<'a, U: Unit, H: DuplexSpongeInterface<U>> VerifierState<'a, H, U> {
     /// assert!(challenge.is_ok());
     /// assert_ne!(challenge.unwrap(), [0; 32]);
     /// ```
+    #[must_use]
     pub fn new(domain_separator: &DomainSeparator<H, U>, narg_string: &'a [u8]) -> Self {
         let hash_state = HashStateWithInstructions::new(domain_separator);
         Self {
@@ -87,7 +88,7 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> core::fmt::Debug for VerifierState<'_
     }
 }
 
-impl<H: DuplexSpongeInterface<u8>> UnitToBytesDeserialize for VerifierState<'_, H, u8> {
+impl<H: DuplexSpongeInterface<u8>> BytesToUnitDeserialize for VerifierState<'_, H, u8> {
     /// Read the next `input.len()` bytes from the NARG string and return them.
     #[inline]
     fn fill_next_bytes(&mut self, input: &mut [u8]) -> Result<(), DomainSeparatorMismatch> {

@@ -33,7 +33,7 @@ pub(super) fn random_bits_in_random_modp<const N: usize>(b: ark_ff::BigInt<N>) -
     use ark_ff::BigInt;
     use ark_ff::BigInteger;
     // XXX. is it correct to have num_bits+1 here?
-    for n in (0..b.num_bits() + 1).rev() {
+    for n in (0..=b.num_bits()).rev() {
         // compute the remainder of b by 2^n
         let r_bits = &b.to_bits_le()[..n as usize];
         let r = BigInt::<N>::from_bits_le(r_bits);

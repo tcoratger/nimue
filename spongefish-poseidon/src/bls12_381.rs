@@ -15,7 +15,7 @@ mod x5_255_3 {
     pub const N: usize = 3;
     pub const R: usize = 2;
 
-    pub const MDS: &'static [[Field; N]] = &[
+    pub const MDS: &[[Field; N]] = &[
         [
             MontFp!("0x3d955d6c02fe4d7cb500e12f2b55eff668a7b4386bd27413766713c93f2acfcd"),
             MontFp!("0x3798866f4e6058035dcf8addb2cf1771fac234bcc8fc05d6676e77e797f224bf"),
@@ -33,7 +33,7 @@ mod x5_255_3 {
         ],
     ];
 
-    pub const ARK: &'static [[Field; N]; R_F + R_P] = &[
+    pub const ARK: &[[Field; N]; R_F + R_P] = &[
         [
             MontFp!("0x6c4ffa723eaf1a7bf74905cc7dae4ca9ff4a2c3bc81d42e09540d1f250910880"),
             MontFp!("0x54dd837eccf180c92c2f53a3476e45a156ab69a403b6b9fdfd8dd970fddcdd9a"),
@@ -371,7 +371,7 @@ mod x5_255_5 {
     pub const N: usize = 5;
     pub const R: usize = 4;
 
-    pub const MDS: &'static [[Field; N]] = &[
+    pub const MDS: &[[Field; N]] = &[
         [
             MontFp!("0x354423b163d1078b0dd645be56316e34a9b98e52dcf9f469be44b108be46c107"),
             MontFp!("0x44778737e8bc1154aca1cd92054a1e5b83808403705f7d54da88bbd1920e1053"),
@@ -409,7 +409,7 @@ mod x5_255_5 {
         ],
     ];
 
-    pub const ARK: &'static [[Field; N]; R_F + R_P] = &[
+    pub const ARK: &[[Field; N]; R_F + R_P] = &[
         [
             MontFp!("0x5ee52b2f39e240a4006e97a15a7609dce42fa9aa510d11586a56db98fa925158"),
             MontFp!("0x3e92829ce321755f769c6fd0d51e98262d7747ad553b028dbbe98b5274b9c8e1"),
