@@ -79,16 +79,6 @@ impl<R: RngCore + CryptoRng> RngCore for ProverPrivateRng<R> {
     }
 }
 
-impl<U, H> From<&DomainSeparator<H, U>> for ProverState<H, U, DefaultRng>
-where
-    U: Unit,
-    H: DuplexSpongeInterface<U>,
-{
-    fn from(domain_separator: &DomainSeparator<H, U>) -> Self {
-        ProverState::new(domain_separator, DefaultRng::default())
-    }
-}
-
 impl<H, U, R> ProverState<H, U, R>
 where
     U: Unit,
@@ -111,9 +101,8 @@ where
             narg_string: Vec::new(),
         }
     }
+}
 
-<<<<<<< HEAD
-=======
 impl<U, H> From<&DomainSeparator<H, U>> for ProverState<H, U, DefaultRng>
 where
     U: Unit,
@@ -130,7 +119,6 @@ where
     H: DuplexSpongeInterface<U>,
     R: RngCore + CryptoRng,
 {
->>>>>>> origin/main
     /// Add a slice `[U]` to the protocol transcript.
     /// The messages are also internally encoded in the protocol transcript,
     /// and used to re-seed the prover's random number generator.
