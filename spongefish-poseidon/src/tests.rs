@@ -53,7 +53,7 @@ fn test_poseidon_bls12_381() {
     use ark_ff::MontFp;
     use spongefish::{DomainSeparator, UnitTranscript};
 
-    use crate::bls12_381::{PoseidonPermx5_255_3, PoseidonPermx5_255_5};
+    use crate::bls12_381::{PoseidonPermx5_255_3, PoseidonPermx5_255_5, Poseidonx5_255_3};
 
     type F = ark_bls12_381::Fr;
 
