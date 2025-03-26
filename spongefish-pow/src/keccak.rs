@@ -30,11 +30,12 @@ impl PowStrategy for KeccakPoW {
 
 #[test]
 fn test_pow_keccak() {
+    use spongefish::{DefaultHash, DomainSeparator};
+
     use crate::{
         ByteDomainSeparator, BytesToUnitDeserialize, BytesToUnitSerialize, PoWChallenge,
         PoWDomainSeparator,
     };
-    use spongefish::{DefaultHash, DomainSeparator};
 
     const BITS: f64 = 10.0;
 

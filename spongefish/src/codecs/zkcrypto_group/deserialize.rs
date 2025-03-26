@@ -1,6 +1,7 @@
+use group::ff::PrimeField;
+
 use super::FieldToUnitDeserialize;
 use crate::{BytesToUnitDeserialize, DuplexSpongeInterface, ProofError, VerifierState};
-use group::ff::PrimeField;
 
 impl<F, H, const N: usize> FieldToUnitDeserialize<F> for VerifierState<'_, H>
 where

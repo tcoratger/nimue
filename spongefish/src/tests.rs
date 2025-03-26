@@ -1,10 +1,9 @@
 use rand::RngCore;
 
-use crate::duplex_sponge::legacy::DigestBridge;
-use crate::keccak::Keccak;
 use crate::{
-    BytesToUnitDeserialize, BytesToUnitSerialize, CommonUnitToBytes, DomainSeparator,
-    DuplexSpongeInterface, HashStateWithInstructions, ProverState, UnitToBytes,
+    duplex_sponge::legacy::DigestBridge, keccak::Keccak, BytesToUnitDeserialize,
+    BytesToUnitSerialize, CommonUnitToBytes, DomainSeparator, DuplexSpongeInterface,
+    HashStateWithInstructions, ProverState, UnitToBytes,
 };
 
 type Sha2 = DigestBridge<sha2::Sha256>;
