@@ -2,7 +2,9 @@ macro_rules! field_traits {
     ($Field:path) => {
         /// Absorb and squeeze field elements to the IO pattern.
         pub trait FieldDomainSeparator<F: $Field> {
+            #[must_use]
             fn add_scalars(self, count: usize, label: &str) -> Self;
+            #[must_use]
             fn challenge_scalars(self, count: usize, label: &str) -> Self;
         }
 
@@ -50,6 +52,7 @@ macro_rules! group_traits {
     ($Group:path, Scalar: $Field:path) => {
         /// Send group elements in the IO pattern.
         pub trait GroupDomainSeparator<G: $Group> {
+            #[must_use]
             fn add_points(self, count: usize, label: &str) -> Self;
         }
 

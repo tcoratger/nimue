@@ -5,8 +5,8 @@ use rand::{CryptoRng, RngCore};
 
 use super::{CommonFieldToUnit, CommonGroupToUnit, FieldToUnit, GroupToUnit};
 use crate::{
-    UnitToBytesDeserialize, UnitToBytesSerialize, CommonUnitToBytes, DomainSeparatorMismatch,
-    DuplexSpongeInterface, ProofResult, ProverState, Unit, UnitTranscript, VerifierState,
+    CommonUnitToBytes, DomainSeparatorMismatch, DuplexSpongeInterface, ProofResult, ProverState,
+    Unit, UnitToBytesDeserialize, UnitToBytesSerialize, UnitTranscript, VerifierState,
 };
 
 impl<F: Field, H: DuplexSpongeInterface, R: RngCore + CryptoRng> FieldToUnit<F>
@@ -40,9 +40,8 @@ where
     G: CurveGroup,
     H: DuplexSpongeInterface,
     R: RngCore + CryptoRng,
-    ProverState<H, u8, R>: CommonGroupToUnit<G, Repr = Vec<u8>>,
+    Self: CommonGroupToUnit<G, Repr = Vec<u8>>,
 {
-    #[inline(always)]
     fn add_points(&mut self, input: &[G]) -> ProofResult<()> {
         let serialized = self.public_points(input);
         self.narg_string.extend(serialized?);
@@ -56,9 +55,8 @@ where
     G: CurveGroup<BaseField = Fp<C2, N>>,
     H: DuplexSpongeInterface<Fp<C, N>>,
     R: RngCore + CryptoRng,
-    ProverState<H, Fp<C, N>, R>: CommonGroupToUnit<G> + FieldToUnit<G::BaseField>,
+    Self: CommonGroupToUnit<G> + FieldToUnit<G::BaseField>,
 {
-    #[inline(always)]
     fn add_points(&mut self, input: &[G]) -> ProofResult<()> {
         self.public_points(input).map(|_| ())?;
         for i in input {

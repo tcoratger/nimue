@@ -3,7 +3,7 @@ use rand::{CryptoRng, RngCore};
 
 use super::{CommonFieldToUnit, CommonGroupToUnit, FieldToUnit, GroupToUnit};
 use crate::{
-    UnitToBytesSerialize, CommonUnitToBytes, DuplexSpongeInterface, ProofResult, ProverState,
+    CommonUnitToBytes, DuplexSpongeInterface, ProofResult, ProverState, UnitToBytesSerialize,
 };
 
 impl<F, H, R> FieldToUnit<F> for ProverState<H, u8, R>
@@ -29,8 +29,8 @@ where
     type Repr = Vec<u8>;
     fn public_points(&mut self, input: &[G]) -> crate::ProofResult<Self::Repr> {
         let mut buf = Vec::new();
-        for p in input.iter() {
-            buf.extend_from_slice(&<G as GroupEncoding>::to_bytes(p).as_ref());
+        for p in input {
+            buf.extend_from_slice(<G as GroupEncoding>::to_bytes(p).as_ref());
         }
         self.add_bytes(&buf)?;
         Ok(buf)

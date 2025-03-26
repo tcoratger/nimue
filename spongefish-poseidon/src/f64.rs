@@ -20,7 +20,7 @@ mod x3_64_24 {
     pub const N: usize = 24;
     pub const R: usize = 20;
 
-    pub const MDS: &'static [[Field; N]] = &[
+    pub const MDS: &[[Field; N]] = &[
         [
             MontFp!("0x70e6dae2c651cead"),
             MontFp!("0x090e1669a71a5d00"),
@@ -647,7 +647,7 @@ mod x3_64_24 {
         ],
     ];
 
-    pub const ARK: &'static [[Field; N]; R_F + R_P] = &[
+    pub const ARK: &[[Field; N]; R_F + R_P] = &[
         [
             MontFp!("0x240ec2a793108b4a"),
             MontFp!("0x753452ad8cbbbecb"),
