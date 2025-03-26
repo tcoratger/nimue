@@ -1,11 +1,13 @@
 use rand::{CryptoRng, RngCore};
 
-use crate::duplex_sponge::Unit;
-use crate::{BytesToUnitSerialize, DomainSeparator, HashStateWithInstructions, UnitTranscript};
-
-use super::duplex_sponge::DuplexSpongeInterface;
-use super::keccak::Keccak;
-use super::{DefaultHash, DefaultRng, DomainSeparatorMismatch};
+use super::{
+    duplex_sponge::DuplexSpongeInterface, keccak::Keccak, DefaultHash, DefaultRng,
+    DomainSeparatorMismatch,
+};
+use crate::{
+    duplex_sponge::Unit, BytesToUnitSerialize, DomainSeparator, HashStateWithInstructions,
+    UnitTranscript,
+};
 
 /// [`ProverState`] is the prover state of an interactive proof (IP) system.
 /// It internally holds the **secret coins** of the prover for zero-knowledge, and

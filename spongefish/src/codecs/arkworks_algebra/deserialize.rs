@@ -1,13 +1,16 @@
-use ark_ec::short_weierstrass::{Affine as SWAffine, Projective as SWCurve, SWCurveConfig};
-use ark_ec::twisted_edwards::{Affine as EdwardsAffine, Projective as EdwardsCurve, TECurveConfig};
-use ark_ec::CurveGroup;
-use ark_ff::Field;
-use ark_ff::{Fp, FpConfig};
+use ark_ec::{
+    short_weierstrass::{Affine as SWAffine, Projective as SWCurve, SWCurveConfig},
+    twisted_edwards::{Affine as EdwardsAffine, Projective as EdwardsCurve, TECurveConfig},
+    CurveGroup,
+};
+use ark_ff::{Field, Fp, FpConfig};
 use ark_serialize::CanonicalDeserialize;
 
 use super::{FieldToUnitDeserialize, GroupToUnitDeserialize};
-use crate::traits::{BytesToUnitDeserialize, UnitTranscript};
-use crate::{DuplexSpongeInterface, ProofResult, VerifierState};
+use crate::{
+    traits::{BytesToUnitDeserialize, UnitTranscript},
+    DuplexSpongeInterface, ProofResult, VerifierState,
+};
 
 impl<F, H> FieldToUnitDeserialize<F> for VerifierState<'_, H>
 where

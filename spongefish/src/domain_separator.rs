@@ -3,12 +3,13 @@
 // which was a pain to use
 // (plain integers don't cast to NonZeroUsize automatically)
 
-use crate::ByteDomainSeparator;
-use std::collections::VecDeque;
-use std::marker::PhantomData;
+use std::{collections::VecDeque, marker::PhantomData};
 
-use super::duplex_sponge::{DuplexSpongeInterface, Unit};
-use super::errors::DomainSeparatorMismatch;
+use super::{
+    duplex_sponge::{DuplexSpongeInterface, Unit},
+    errors::DomainSeparatorMismatch,
+};
+use crate::ByteDomainSeparator;
 
 /// This is the separator between operations in the IO Pattern
 /// and as such is the only forbidden character in labels.

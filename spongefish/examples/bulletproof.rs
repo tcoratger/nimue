@@ -8,8 +8,7 @@
 //! C = \langle a, G \rangle + \langle b, H \rangle + \langle a, b \rangle U
 //! $$
 
-use ark_ec::PrimeGroup;
-use ark_ec::{AffineRepr, CurveGroup, VariableBaseMSM};
+use ark_ec::{AffineRepr, CurveGroup, PrimeGroup, VariableBaseMSM};
 use ark_ff::Field;
 use ark_std::log2;
 use rand::rngs::OsRng;

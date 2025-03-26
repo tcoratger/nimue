@@ -6,10 +6,9 @@ use ark_serialize::{CanonicalDeserialize, CanonicalSerialize, SerializationError
 use rand::{CryptoRng, RngCore};
 
 use super::{CommonFieldToUnit, CommonGroupToUnit, UnitToField};
-use crate::codecs::bytes_uniform_modp;
 use crate::{
-    CommonUnitToBytes, DomainSeparatorMismatch, DuplexSpongeInterface, ProofError, ProofResult,
-    ProverState, Unit, UnitToBytes, UnitTranscript, VerifierState,
+    codecs::bytes_uniform_modp, CommonUnitToBytes, DomainSeparatorMismatch, DuplexSpongeInterface,
+    ProofError, ProofResult, ProverState, Unit, UnitToBytes, UnitTranscript, VerifierState,
 };
 
 // Implementation of basic traits for bridging arkworks and spongefish

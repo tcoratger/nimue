@@ -1,12 +1,12 @@
-use core::fmt;
-use core::marker::PhantomData;
+use core::{fmt, marker::PhantomData};
 use std::collections::vec_deque::VecDeque;
 
-use super::domain_separator::{DomainSeparator, Op};
-use super::duplex_sponge::DuplexSpongeInterface;
-use super::duplex_sponge::Unit;
-use super::errors::DomainSeparatorMismatch;
-use super::keccak::Keccak;
+use super::{
+    domain_separator::{DomainSeparator, Op},
+    duplex_sponge::{DuplexSpongeInterface, Unit},
+    errors::DomainSeparatorMismatch,
+    keccak::Keccak,
+};
 
 /// A stateful hash object that interfaces with duplex interfaces.
 #[derive(Clone)]

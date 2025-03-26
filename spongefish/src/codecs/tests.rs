@@ -2,9 +2,10 @@ use ark_ec::CurveGroup;
 use ark_serialize::CanonicalSerialize;
 use group::GroupEncoding;
 
-use crate::keccak::Keccak;
-use crate::{codecs, ByteDomainSeparator};
-use crate::{DomainSeparator, DuplexSpongeInterface, UnitToBytes};
+use crate::{
+    codecs, keccak::Keccak, ByteDomainSeparator, DomainSeparator, DuplexSpongeInterface,
+    UnitToBytes,
+};
 
 fn group_domain_separator<G, H>() -> DomainSeparator<H>
 where
