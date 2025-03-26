@@ -1,7 +1,10 @@
 use ark_ec::CurveGroup;
 use ark_ff::{Field, Fp, FpConfig, PrimeField};
 
-use super::*;
+use super::{
+    ByteDomainSeparator, DomainSeparator, DuplexSpongeInterface, FieldDomainSeparator,
+    GroupDomainSeparator,
+};
 use crate::codecs::{bytes_modp, bytes_uniform_modp};
 
 impl<F, H> FieldDomainSeparator<F> for DomainSeparator<H>
@@ -74,7 +77,7 @@ where
     G: CurveGroup<BaseField = Fp<C, N>>,
     H: DuplexSpongeInterface<Fp<C, N>>,
     C: FpConfig<N>,
-    DomainSeparator<H, Fp<C, N>>: FieldDomainSeparator<Fp<C, N>>,
+    Self: FieldDomainSeparator<Fp<C, N>>,
 {
     fn add_points(self, count: usize, label: &str) -> Self {
         self.absorb(count * 2, label)
@@ -122,5 +125,5 @@ fn test_domain_separator() {
     assert_eq!(
         domain_separator.as_bytes(),
         b"github.com/mmaker/spongefish\0A32g\0A32pk\0R\0A32com\0S47chal\0A32resp"
-    )
+    );
 }

@@ -128,7 +128,7 @@ impl<U: Unit, C: Permutation<U = U>> DuplexSpongeInterface<U> for DuplexSponge<C
         // XXX. is the compiler really going to do this?
         self.permutation.as_mut()[..C::R]
             .iter_mut()
-            .for_each(|x| x.zeroize());
+            .for_each(Zeroize::zeroize);
         self.squeeze_pos = C::R;
         self
     }

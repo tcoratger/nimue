@@ -18,17 +18,15 @@ impl<C: FpConfig<N>, const N: usize> Unit for Fp<C, N> {
     fn write(bunch: &[Self], mut w: &mut impl io::Write) -> Result<(), io::Error> {
         for b in bunch {
             b.serialize_compressed(&mut w)
-                .map_err(|_| io::Error::new(io::ErrorKind::Other, "oh no!"))?
+                .map_err(|_| io::Error::other("oh no!"))?;
         }
         Ok(())
     }
 
     fn read(mut r: &mut impl io::Read, bunch: &mut [Self]) -> Result<(), io::Error> {
         for b in bunch.iter_mut() {
-            let b_result = Fp::deserialize_compressed(&mut r);
-            *b = b_result.map_err(|_| {
-                io::Error::new(io::ErrorKind::Other, "Unable to deserialize into Field.")
-            })?
+            let b_result = Self::deserialize_compressed(&mut r);
+            *b = b_result.map_err(|_| io::Error::other("Unable to deserialize into Field."))?;
         }
         Ok(())
     }
@@ -36,7 +34,7 @@ impl<C: FpConfig<N>, const N: usize> Unit for Fp<C, N> {
 
 impl From<SerializationError> for ProofError {
     fn from(_value: SerializationError) -> Self {
-        ProofError::SerializationError
+        Self::SerializationError
     }
 }
 
@@ -133,7 +131,7 @@ where
     fn public_scalars(&mut self, input: &[F]) -> ProofResult<Self::Repr> {
         let flattened: Vec<_> = input
             .iter()
-            .flat_map(|f| f.to_base_prime_field_elements())
+            .flat_map(Field::to_base_prime_field_elements)
             .collect();
         self.public_units(&flattened)?;
         Ok(())
@@ -170,7 +168,7 @@ where
     fn public_scalars(&mut self, input: &[F]) -> ProofResult<Self::Repr> {
         let flattened: Vec<_> = input
             .iter()
-            .flat_map(|f| f.to_base_prime_field_elements())
+            .flat_map(Field::to_base_prime_field_elements)
             .collect();
         self.public_units(&flattened)?;
         Ok(())

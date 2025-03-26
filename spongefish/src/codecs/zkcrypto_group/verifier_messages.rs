@@ -13,7 +13,7 @@ fn from_bytes_mod_order<F: PrimeField>(bytes: &[u8]) -> F {
     let basis = F::from(256);
     bytes
         .iter()
-        .fold(F::ZERO, |acc, &b| acc * basis + F::from(b as u64))
+        .fold(F::ZERO, |acc, &b| acc * basis + F::from(u64::from(b)))
 }
 
 impl<F, T> UnitToField<F> for T
