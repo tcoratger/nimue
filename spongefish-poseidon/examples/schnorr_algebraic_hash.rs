@@ -4,7 +4,11 @@
 use ark_ec::{CurveGroup, PrimeGroup};
 use ark_ff::PrimeField;
 use ark_std::UniformRand;
-use spongefish::codecs::arkworks_algebra::*;
+use spongefish::codecs::arkworks_algebra::{
+    swap_field, ByteDomainSeparator, CommonGroupToUnit, DomainSeparator, DuplexSpongeInterface,
+    FieldToUnitDeserialize, FieldToUnitSerialize, GroupDomainSeparator, GroupToUnitDeserialize,
+    GroupToUnitSerialize, ProofError, ProofResult, ProverState, Unit, UnitToBytes, VerifierState,
+};
 
 /// Extend the IO pattern with the Schnorr protocol.
 trait SchnorrDomainSeparator<G: CurveGroup> {
@@ -17,7 +21,7 @@ where
     G: CurveGroup,
     U: Unit,
     H: DuplexSpongeInterface<U>,
-    DomainSeparator<H, U>: GroupDomainSeparator<G> + ByteDomainSeparator,
+    Self: GroupDomainSeparator<G> + ByteDomainSeparator,
 {
     fn add_schnorr_domsep(self) -> Self {
         self.add_points(1, "generator (P)")

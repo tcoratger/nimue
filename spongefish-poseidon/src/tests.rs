@@ -43,14 +43,14 @@ fn test_squeeze_bytes_from_algebraic_hash() {
     // each element should appear roughly 8 times on average. Checking we're not too far from that.
     assert!(
         frequencies.iter().all(|&x| x < 32 && x > 0),
-        "This array should have random bytes but hasn't: {:?}",
-        frequencies
+        "This array should have random bytes but hasn't: {frequencies:?}"
     );
 }
 
 #[cfg(feature = "bls12-381")]
 #[test]
 fn test_poseidon_bls12_381() {
+    use crate::bls12_381::Poseidonx5_255_3;
     use crate::bls12_381::{PoseidonPermx5_255_3, PoseidonPermx5_255_5};
     use ark_ff::MontFp;
     use spongefish::DomainSeparator;
@@ -87,7 +87,6 @@ fn test_poseidon_bls12_381() {
     test_vector::<PoseidonPermx5_255_5>(&tv_x5_255_5_input, &tv_x5_255_5_output);
 
     // Check that poseidon can indeed be instantiated and doesn't do terribly stupid things like give 0 challenges.
-    use crate::bls12_381::Poseidonx5_255_3;
     let domain_separator = DomainSeparator::<Poseidonx5_255_3, F>::new("test")
         .absorb(1, "in")
         .squeeze(10, "out");

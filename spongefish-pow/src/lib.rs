@@ -18,6 +18,7 @@ pub trait PoWDomainSeparator {
     /// The number of bits used for the proof of work are **not** encoded within the [`spongefish::DomainSeparator`].
     /// It is up to the implementor to change the domain separator or the label in order to reflect changes in the proof
     /// in order to preserve simulation extractability.
+    #[must_use]
     fn challenge_pow(self, label: &str) -> Self;
 }
 
@@ -41,7 +42,7 @@ where
     U: Unit,
     H: DuplexSpongeInterface<U>,
     R: rand::CryptoRng + rand::RngCore,
-    ProverState<H, U, R>: BytesToUnitSerialize + UnitToBytes,
+    Self: BytesToUnitSerialize + UnitToBytes,
 {
     fn challenge_pow<S: PowStrategy>(&mut self, bits: f64) -> ProofResult<()> {
         let challenge = self.challenge_bytes()?;
@@ -53,11 +54,11 @@ where
     }
 }
 
-impl<'a, H, U> PoWChallenge for VerifierState<'a, H, U>
+impl<H, U> PoWChallenge for VerifierState<'_, H, U>
 where
     U: Unit,
     H: DuplexSpongeInterface<U>,
-    VerifierState<'a, H, U>: BytesToUnitDeserialize + UnitToBytes,
+    Self: BytesToUnitDeserialize + UnitToBytes,
 {
     fn challenge_pow<S: PowStrategy>(&mut self, bits: f64) -> ProofResult<()> {
         let challenge = self.challenge_bytes()?;
