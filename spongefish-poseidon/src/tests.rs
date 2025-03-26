@@ -50,11 +50,10 @@ fn test_squeeze_bytes_from_algebraic_hash() {
 #[cfg(feature = "bls12-381")]
 #[test]
 fn test_poseidon_bls12_381() {
-    use crate::bls12_381::Poseidonx5_255_3;
-    use crate::bls12_381::{PoseidonPermx5_255_3, PoseidonPermx5_255_5};
     use ark_ff::MontFp;
-    use spongefish::DomainSeparator;
-    use spongefish::UnitTranscript;
+    use spongefish::{DomainSeparator, UnitTranscript};
+
+    use crate::bls12_381::{PoseidonPermx5_255_3, PoseidonPermx5_255_5};
 
     type F = ark_bls12_381::Fr;
 
@@ -104,8 +103,9 @@ fn test_poseidon_bls12_381() {
 #[cfg(feature = "bn254")]
 #[test]
 fn test_poseidon_bn254() {
-    use crate::bn254::{PoseidonPermx5_254_3, PoseidonPermx5_254_5};
     use ark_ff::MontFp;
+
+    use crate::bn254::{PoseidonPermx5_254_3, PoseidonPermx5_254_5};
 
     type F = ark_bn254::Fr;
 
@@ -141,9 +141,9 @@ fn test_poseidon_bn254() {
 #[cfg(feature = "solinas")]
 #[test]
 fn test_poseidon_f64() {
-    use crate::f64;
-    use crate::f64::PoseidonPermx3_64_24;
     use ark_ff::MontFp;
+
+    use crate::{f64, f64::PoseidonPermx3_64_24};
     type F = f64::Field64;
 
     let tv_x5_255_3_input: [F; 24] = [

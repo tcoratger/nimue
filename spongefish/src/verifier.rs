@@ -1,9 +1,11 @@
-use crate::domain_separator::DomainSeparator;
-use crate::duplex_sponge::{DuplexSpongeInterface, Unit};
-use crate::errors::DomainSeparatorMismatch;
-use crate::sho::HashStateWithInstructions;
-use crate::traits::{BytesToUnitDeserialize, UnitTranscript};
-use crate::DefaultHash;
+use crate::{
+    domain_separator::DomainSeparator,
+    duplex_sponge::{DuplexSpongeInterface, Unit},
+    errors::DomainSeparatorMismatch,
+    sho::HashStateWithInstructions,
+    traits::{BytesToUnitDeserialize, UnitTranscript},
+    DefaultHash,
+};
 
 /// [`VerifierState`] is the verifier state.
 ///

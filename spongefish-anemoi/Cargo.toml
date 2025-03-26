@@ -12,5 +12,3 @@ ark-ff = { workspace = true }
 spongefish = { workspace = true, features = ["arkworks-algebra"] }
 zeroize = { workspace = true }
 anemoi = { workspace = true, features = ["bls12_381"] }
-ark-bls12-381 = { workspace = true }
-arrayvec = { workspace = true }

@@ -1,17 +1,15 @@
-use super::PowStrategy;
-use blake3;
+use std::sync::atomic::{AtomicU64, Ordering};
 
-use {
-    blake3::{
-        guts::BLOCK_LEN,
-        platform::{Platform, MAX_SIMD_DEGREE},
-        IncrementCounter, OUT_LEN,
-    },
-    std::sync::atomic::{AtomicU64, Ordering},
+use blake3::{
+    self,
+    guts::BLOCK_LEN,
+    platform::{Platform, MAX_SIMD_DEGREE},
+    IncrementCounter, OUT_LEN,
 };
-
 #[cfg(feature = "parallel")]
 use rayon::broadcast;
+
+use super::PowStrategy;
 
 #[derive(Clone, Copy)]
 pub struct Blake3PoW {
@@ -146,11 +144,12 @@ impl Blake3PoW {
 
 #[test]
 fn test_pow_blake3() {
+    use spongefish::{DefaultHash, DomainSeparator};
+
     use crate::{
         ByteDomainSeparator, BytesToUnitDeserialize, BytesToUnitSerialize, PoWChallenge,
         PoWDomainSeparator,
     };
-    use spongefish::{DefaultHash, DomainSeparator};
 
     const BITS: f64 = 10.0;
 

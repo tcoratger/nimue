@@ -1,5 +1,4 @@
-use crate::errors::DomainSeparatorMismatch;
-use crate::Unit;
+use crate::{errors::DomainSeparatorMismatch, Unit};
 
 /// Absorbing and squeezing native elements from the sponge.
 ///

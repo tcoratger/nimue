@@ -2,8 +2,9 @@
 //! Despite internally we use the same permutation function,
 //! we build a duplex sponge in overwrite mode
 //! on the top of it using the `DuplexSponge` trait.
-use crate::duplex_sponge::{DuplexSponge, Permutation};
 use zeroize::{Zeroize, ZeroizeOnDrop};
+
+use crate::duplex_sponge::{DuplexSponge, Permutation};
 
 /// A duplex sponge based on the permutation [`keccak::f1600`]
 /// using [`DuplexSponge`].

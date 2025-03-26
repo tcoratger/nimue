@@ -3,9 +3,7 @@
 use std::fmt::Debug;
 
 use ark_ff::PrimeField;
-use spongefish::duplex_sponge::DuplexSponge;
-use spongefish::duplex_sponge::Permutation;
-use spongefish::duplex_sponge::Unit;
+use spongefish::duplex_sponge::{DuplexSponge, Permutation, Unit};
 
 /// Poseidon Sponge.
 ///

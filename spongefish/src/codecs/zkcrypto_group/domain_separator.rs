@@ -1,11 +1,10 @@
 use group::{ff::PrimeField, Group, GroupEncoding};
 
+use super::{FieldDomainSeparator, GroupDomainSeparator};
 use crate::{
     codecs::{bytes_modp, bytes_uniform_modp},
     ByteDomainSeparator, DomainSeparator, DuplexSpongeInterface,
 };
-
-use super::{FieldDomainSeparator, GroupDomainSeparator};
 
 impl<F, H> FieldDomainSeparator<F> for DomainSeparator<H>
 where

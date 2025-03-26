@@ -1,8 +1,7 @@
-use crate::{ProofResult, UnitToBytes};
 use group::ff::PrimeField;
 
 use super::UnitToField;
-use crate::codecs::bytes_uniform_modp;
+use crate::{codecs::bytes_uniform_modp, ProofResult, UnitToBytes};
 
 /// Convert a byte array to a field element.
 ///
