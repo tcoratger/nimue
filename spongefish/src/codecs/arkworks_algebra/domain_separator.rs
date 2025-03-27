@@ -88,10 +88,54 @@ where
 mod tests {
     use ark_bls12_381::{Fq2, Fr};
     use ark_curve25519::EdwardsProjective as Curve;
-    use ark_ff::{Fp2, Fp2Config, Fp64, MontBackend, MontConfig, MontFp, PrimeField};
+    use ark_ff::{
+        AdditiveGroup, Fp2, Fp2Config, Fp4, Fp4Config, Fp64, MontBackend, MontConfig, MontFp,
+        PrimeField,
+    };
 
     use super::*;
     use crate::DefaultHash;
+
+    /// Configuration for the BabyBear field (modulus = 2^31 - 2^27 + 1, generator = 21).
+    #[derive(MontConfig)]
+    #[modulus = "2013265921"]
+    #[generator = "21"]
+    pub struct BabybearConfig;
+
+    /// Base field type using the BabyBear configuration.
+    pub type BabyBear = Fp64<MontBackend<BabybearConfig, 1>>;
+
+    /// Quadratic extension field over BabyBear.
+    pub type BabyBear2 = Fp2<F2Config64>;
+
+    /// Configuration for the quadratic extension BabyBear2.
+    pub struct F2Config64;
+
+    impl Fp2Config for F2Config64 {
+        type Fp = BabyBear;
+
+        // Mocked value: not used in tests
+        const NONRESIDUE: Self::Fp = BabyBear::ZERO;
+
+        // Mocked value: not used in tests
+        const FROBENIUS_COEFF_FP2_C1: &'static [Self::Fp] = &[BabyBear::ZERO];
+    }
+
+    /// Quartic extension field over BabyBear using nested Fp2 extensions.
+    pub type BabyBear4 = Fp4<F4Config64>;
+
+    /// Configuration for the quartic extension BabyBear4.
+    pub struct F4Config64;
+
+    impl Fp4Config for F4Config64 {
+        type Fp2Config = F2Config64;
+
+        // Mocked value: not used in tests
+        const NONRESIDUE: Fp2<Self::Fp2Config> = Fp2::<Self::Fp2Config>::ZERO;
+
+        // Mocked value: not used in tests
+        const FROBENIUS_COEFF_FP4_C1: &'static [<Self::Fp2Config as Fp2Config>::Fp] = &[];
+    }
 
     #[test]
     fn test_domain_separator() {
@@ -327,6 +371,103 @@ mod tests {
         // - \0A24foo → absorb 24 bytes labeled "foo"
         // - \0S48bar → squeeze 48 bytes labeled "bar"
         let expected = b"test-fp\0A24foo\0S48bar";
+        assert_eq!(sep.as_bytes(), expected);
+    }
+
+    #[test]
+    fn test_add_scalars_babybear() {
+        // Test absorption of scalars from the base field BabyBear.
+        // - BabyBear has extension degree = 1
+        // - Field size: 2^31 - 2^27 + 1 → 31 bits → bytes_modp(31) = 4
+        // - 2 scalars * 1 * 4 = 8 bytes absorbed
+        // - "A" prefix indicates absorption in the domain separator
+        let sep = <DomainSeparator as FieldDomainSeparator<BabyBear>>::add_scalars(
+            DomainSeparator::new("babybear"),
+            2,
+            "foo",
+        );
+
+        let expected = b"babybear\0A8foo";
+        assert_eq!(sep.as_bytes(), expected);
+    }
+
+    #[test]
+    fn test_challenge_scalars_babybear() {
+        // Test squeezing of scalars from the base field BabyBear.
+        // - BabyBear has extension degree = 1
+        // - bytes_uniform_modp(31) = 5
+        // - 3 scalars * 1 * 5 = 15 bytes squeezed
+        // - "S" prefix indicates squeezing in the domain separator
+        let sep = <DomainSeparator as FieldDomainSeparator<BabyBear>>::challenge_scalars(
+            DomainSeparator::new("bb"),
+            3,
+            "bar",
+        );
+
+        let expected = b"bb\0S57bar";
+        assert_eq!(sep.as_bytes(), expected);
+    }
+
+    #[test]
+    fn test_add_scalars_quadratic_ext_field() {
+        // Test absorption of scalars from a quadratic extension field (BabyBear2 = Fp2 over BabyBear).
+        // - Extension degree = 2
+        // - Base field bits = 31 → bytes_modp(31) = 4
+        // - 2 scalars * 2 * 4 = 16 bytes absorbed
+        let sep = <DomainSeparator as FieldDomainSeparator<BabyBear2>>::add_scalars(
+            DomainSeparator::new("ext"),
+            2,
+            "a",
+        );
+
+        let expected = b"ext\0A16a";
+        assert_eq!(sep.as_bytes(), expected);
+    }
+
+    #[test]
+    fn test_challenge_scalars_quadratic_ext_field() {
+        // Test squeezing of scalars from a quadratic extension field (BabyBear2 = Fp2 over BabyBear).
+        // - Extension degree = 2
+        // - bytes_uniform_modp(31) = 19
+        // - 1 scalar * 2 * 19 = 38 bytes squeezed
+        let sep = <DomainSeparator as FieldDomainSeparator<BabyBear2>>::challenge_scalars(
+            DomainSeparator::new("ext2"),
+            1,
+            "b",
+        );
+
+        let expected = b"ext2\0S38b";
+        assert_eq!(sep.as_bytes(), expected);
+    }
+
+    #[test]
+    fn test_add_scalars_quartic_ext_field() {
+        // Test absorption of scalars from a quartic extension field (BabyBear4 = Fp4 over BabyBear).
+        // - Extension degree = 4
+        // - Base field bits = 31 → bytes_modp(31) = 4
+        // - 2 scalars * 4 * 4 = 32 bytes absorbed
+        let sep = <DomainSeparator as FieldDomainSeparator<BabyBear4>>::add_scalars(
+            DomainSeparator::new("ext"),
+            2,
+            "a",
+        );
+        let expected = b"ext\0A32a";
+        assert_eq!(sep.as_bytes(), expected);
+    }
+
+    #[test]
+    fn test_challenge_scalars_quartic_ext_field() {
+        // Test squeezing of scalars from a quartic extension field (BabyBear4 = Fp4 over BabyBear).
+        // - Extension degree = 4
+        // - bytes_uniform_modp(31) = 19
+        // - 1 scalar * 4 * 19 = 76 bytes squeezed
+        let sep = <DomainSeparator as FieldDomainSeparator<BabyBear4>>::challenge_scalars(
+            DomainSeparator::new("ext2"),
+            1,
+            "b",
+        );
+
+        let expected = b"ext2\0S76b";
         assert_eq!(sep.as_bytes(), expected);
     }
 }
