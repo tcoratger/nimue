@@ -11,13 +11,13 @@ use super::{
 };
 use crate::ByteDomainSeparator;
 
-/// This is the separator between operations in the IO Pattern
+/// This is the separator between operations in the domain separator
 /// and as such is the only forbidden character in labels.
 const SEP_BYTE: &str = "\0";
 
-/// The IO Pattern of an interactive protocol.
+/// The domain separator of an interactive protocol.
 ///
-/// An IO pattern is a string that specifies the protocol in a simple,
+/// An domain separator is a string that specifies the protocol in a simple,
 /// non-ambiguous, human-readable format. A typical example is the following:
 ///
 /// ```text
@@ -32,7 +32,7 @@ const SEP_BYTE: &str = "\0";
 ///
 /// ## Guarantees
 ///
-/// The struct [`DomainSeparator`] guarantees the creation of a valid IO Pattern string, whose lengths are coherent with the types described in the protocol. No information about the types themselves is stored in an IO Pattern.
+/// The struct [`DomainSeparator`] guarantees the creation of a valid domain separator string, whose lengths are coherent with the types described in the protocol. No information about the types themselves is stored in an domain separator.
 /// This means that [`ProverState`][`crate::ProverState`] or [`VerifierState`][`crate::VerifierState`] instances can generate successfully a protocol transcript respecting the length constraint but not the types. See [issue #6](https://github.com/arkworks-rs/spongefish/issues/6) for a discussion on the topic.
 
 #[derive(Clone)]
@@ -140,13 +140,13 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
         Self::from_string(self.io + SEP_BYTE + "R")
     }
 
-    /// Return the IO Pattern as bytes.
+    /// Return the domain separator as bytes.
     #[must_use]
     pub fn as_bytes(&self) -> &[u8] {
         self.io.as_bytes()
     }
 
-    /// Parse the givern IO Pattern into a sequence of [`Op`]'s.
+    /// Parse the givern domain separator into a sequence of [`Op`]'s.
     pub(crate) fn finalize(&self) -> VecDeque<Op> {
         // Guaranteed to succeed as instances are all valid domain_separators
         Self::parse_domsep(self.io.as_bytes())
@@ -211,13 +211,13 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
         }
     }
 
-    /// Create an [`crate::ProverState`] instance from the IO Pattern.
+    /// Create an [`crate::ProverState`] instance from the domain separator.
     #[must_use]
     pub fn to_prover_state(&self) -> crate::ProverState<H, U, crate::DefaultRng> {
         self.into()
     }
 
-    /// Create a [`crate::VerifierState`] instance from the IO Pattern and the protocol transcript (bytes).
+    /// Create a [`crate::VerifierState`] instance from the domain separator and the protocol transcript (bytes).
     #[must_use]
     pub fn to_verifier_state<'a>(&self, transcript: &'a [u8]) -> crate::VerifierState<'a, H, U> {
         crate::VerifierState::<H, U>::new(self, transcript)

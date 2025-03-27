@@ -16,7 +16,7 @@
 /// It can be instantiated via `DomainSeparator::to_prover_state()`.
 ///
 /// 3. `spongefish::VerifierState`, describes the verifier state.
-/// It internally will read the transcript, and deserialize elements as requested making sure that they match with the IO Pattern.
+/// It internally will read the transcript, and deserialize elements as requested making sure that they match with the domain separator.
 /// It can be used to verify a proof.
 use ark_ec::{CurveGroup, PrimeGroup};
 use ark_std::UniformRand;
@@ -27,14 +27,14 @@ use spongefish::codecs::arkworks_algebra::{
     GroupToUnitSerialize, ProofError, ProofResult, ProverState, UnitToField, VerifierState,
 };
 
-/// Extend the IO pattern with the Schnorr protocol.
+/// Extend the domain separator with the Schnorr protocol.
 trait SchnorrDomainSeparator<G: CurveGroup> {
     /// Shortcut: create a new schnorr proof with statement + proof.
     fn new_schnorr_proof(domsep: &str) -> Self;
 
     /// Add the statement of the Schnorr proof
     fn add_schnorr_statement(self) -> Self;
-    /// Add the Schnorr protocol to the IO pattern.
+    /// Add the Schnorr protocol to the domain separator.
     fn add_schnorr_domsep(self) -> Self;
 }
 
@@ -98,7 +98,7 @@ where
     let K = P * k;
 
     // Add a sequence of points to the protocol transcript.
-    // An error is returned in case of failed serialization, or inconsistencies with the IO pattern provided (see below).
+    // An error is returned in case of failed serialization, or inconsistencies with the domain separator provided (see below).
     prover_state.add_points(&[K])?;
 
     // Fetch a challenge from the current transcript state.
@@ -146,7 +146,7 @@ where
     // Check the verification equation, otherwise return a verification error.
     // The type ProofError is an enum that can report:
     // - InvalidProof: the proof is not valid
-    // - InvalidIO: the transcript does not match the IO pattern
+    // - InvalidIO: the transcript does not match the domain separator
     // - SerializationError: there was an error serializing/deserializing an element
     if P * r == K + X * c {
         Ok(())

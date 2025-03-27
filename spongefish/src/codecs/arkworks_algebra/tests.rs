@@ -5,7 +5,7 @@ use crate::{
     DomainSeparator, DuplexSpongeInterface, ProofResult, Unit, UnitToBytes, UnitTranscript,
 };
 
-/// Test that the algebraic hashes do use the IV generated from the IO Pattern.
+/// Test that the algebraic hashes do use the IV generated from the domain separator.
 fn check_iv_is_used<
     H: DuplexSpongeInterface<F>,
     F: Unit + Copy + Default + Eq + core::fmt::Debug,

@@ -149,7 +149,7 @@ impl<U: Unit, H: DuplexSpongeInterface<U>> Drop for HashStateWithInstructions<H,
 impl<U: Unit, H: DuplexSpongeInterface<U>> fmt::Debug for HashStateWithInstructions<H, U> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         // Ensure that the state isn't accidentally logged,
-        // but provide the remaining IO Pattern for debugging.
+        // but provide the remaining domain separator for debugging.
         write!(
             f,
             "Sponge in duplex mode with committed verifier operations: {:?}",

@@ -63,7 +63,7 @@ fn test_invalid_domsep_sequence() {
 }
 
 // Hiding for now. Should it panic ?
-// /// A protocol whose IO pattern is not finished should panic.
+// /// A protocol whose domain separator is not finished should panic.
 // #[test]
 // #[should_panic]
 // fn test_unfinished_domsep() {
@@ -145,7 +145,7 @@ fn test_incomplete_domsep() {
     prover_state.fill_challenge_bytes(&mut [0u8; 10]).unwrap();
 }
 
-/// The user should respect the IO pattern even with empty length.
+/// The user should respect the domain separator even with empty length.
 #[test]
 fn test_prover_empty_absorb() {
     let domain_separator = DomainSeparator::<Keccak>::new("domain separator")

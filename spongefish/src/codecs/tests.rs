@@ -107,7 +107,7 @@ where
     let mut ark_chal = [0u8; 16];
     let mut group_chal = [0u8; 16];
 
-    // Check that the IO Patterns are the same.
+    // Check that the domain separators are the same.
     let mut ark_prover = ark_domsep.to_prover_state();
     let mut group_prover = group_domsep.to_prover_state();
     assert_eq!(ark_domsep.as_bytes(), group_domsep.as_bytes());

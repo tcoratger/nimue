@@ -22,7 +22,7 @@ where
 }
 
 impl<'a, U: Unit, H: DuplexSpongeInterface<U>> VerifierState<'a, H, U> {
-    /// Creates a new [`VerifierState`] instance with the given sponge and IO Pattern.
+    /// Creates a new [`VerifierState`] instance with the given sponge and domain separator.
     ///
     /// The resulting object will act as the verifier in a zero-knowledge protocol.
     ///

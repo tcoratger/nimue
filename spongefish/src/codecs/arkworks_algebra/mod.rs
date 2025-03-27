@@ -117,7 +117,7 @@
 //! ```
 //! Now the above code should work with algebraic hashes such as `PoseidonHash` just as well as [`Keccak`][`crate::keccak::Keccak`].
 //!
-/// IO Pattern utilities.
+/// domain separator utilities.
 mod domain_separator;
 /// Add public elements (field or group elements) to the protocol transcript.
 mod verifier_messages;

@@ -155,7 +155,7 @@ where
     /// # use spongefish::*;
     /// # use rand::RngCore;
     ///
-    /// // The IO Pattern does not need to specify the private coins.
+    /// // The domain separator does not need to specify the private coins.
     /// let domain_separator = DomainSeparator::<DefaultHash>::new("📝");
     /// let mut prover_state = domain_separator.to_prover_state();
     /// assert_ne!(prover_state.rng().next_u32(), 0, "You won the lottery!");
