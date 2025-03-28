@@ -50,6 +50,6 @@ impl Permutation
     }
 
     fn permute(&mut self) {
-        _AnemoiBls12_381_2_1::permutation(&mut self.0)
+        _AnemoiBls12_381_2_1::permutation(&mut self.0);
     }
 }

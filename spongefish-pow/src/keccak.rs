@@ -8,6 +8,7 @@ pub struct KeccakPoW {
 }
 
 impl PowStrategy for KeccakPoW {
+    #[allow(clippy::cast_sign_loss)]
     fn new(challenge: [u8; 32], bits: f64) -> Self {
         let threshold = (64.0 - bits).exp2().ceil() as u64;
         Self {

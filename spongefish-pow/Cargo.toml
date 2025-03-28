@@ -4,9 +4,12 @@ version = "0.1.0"
 edition = "2021"
 authors = [
     "Giacomo Fenzi <giacomofenzi@outlook.com>",
-    "Remco Bloemen <remco@wicked.ventures>"
+    "Remco Bloemen <remco@wicked.ventures>",
 ]
 license = "BSD-3-Clause"
+
+[lints]
+workspace = true
 
 [dependencies]
 spongefish = { workspace = true }

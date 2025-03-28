@@ -94,7 +94,7 @@ impl<const NAME: u32, F: PrimeField, const R: usize, const N: usize> zeroize::Ze
 impl<const NAME: u32, F, const R: usize, const N: usize> Permutation
     for PoseidonPermutation<NAME, F, R, N>
 where
-    PoseidonPermutation<NAME, F, R, N>: Default,
+    Self: Default,
     F: PrimeField + Unit,
 {
     type U = F;
