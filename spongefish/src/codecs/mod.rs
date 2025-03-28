@@ -14,7 +14,6 @@ pub mod arkworks_algebra;
 pub mod zkcrypto_group;
 
 /// Bytes needed in order to obtain a uniformly distributed random element of `modulus_bits`
-#[allow(unused)]
 pub(super) const fn bytes_uniform_modp(modulus_bits: u32) -> usize {
     (modulus_bits as usize + 128) / 8
 }
@@ -51,7 +50,6 @@ pub(super) fn random_bytes_in_random_modp<const N: usize>(modulus: ark_ff::BigIn
 }
 
 /// Bytes needed in order to encode an element of F.
-#[allow(unused)]
 pub(super) const fn bytes_modp(modulus_bits: u32) -> usize {
     (modulus_bits as usize).div_ceil(8)
 }
