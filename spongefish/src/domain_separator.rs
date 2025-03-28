@@ -176,7 +176,7 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
         // consecutive calls are merged into one
         match stack.pop_front() {
             None => Ok(stack),
-            Some(x) => Self::simplify_stack([x].into(), stack),
+            Some(x) => Ok(Self::simplify_stack([x].into(), stack)),
         }
     }
 
