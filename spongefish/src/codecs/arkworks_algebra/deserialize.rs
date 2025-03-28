@@ -64,7 +64,6 @@ where
     P: TECurveConfig<BaseField = Fp<C, N>>,
 {
     fn fill_next_points(&mut self, output: &mut [EdwardsCurve<P>]) -> ProofResult<()> {
-        println!("4444444444444444444444");
         for o in output.iter_mut() {
             let o_affine = EdwardsAffine::deserialize_compressed(&mut self.narg_string)?;
             *o = o_affine.into();
@@ -81,7 +80,6 @@ where
     P: SWCurveConfig<BaseField = Fp<C, N>>,
 {
     fn fill_next_points(&mut self, output: &mut [SWCurve<P>]) -> ProofResult<()> {
-        println!("5555555555555555555555");
         for o in output.iter_mut() {
             let o_affine = SWAffine::deserialize_compressed(&mut self.narg_string)?;
             *o = o_affine.into();
