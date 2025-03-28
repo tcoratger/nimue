@@ -1,7 +1,7 @@
 [package]
 name = "spongefish"
 version = "0.2.0"
-authors = ["Michele Orrù <m@orru.net>", " Giacomo Fenzi <giacomofenzi@outlook.com>"]
+authors = ["Michele Orrù <m@orru.net>", "Giacomo Fenzi <giacomofenzi@outlook.com>"]
 description = "A library for Fiat-Shamir transcripts."
 edition = "2021"
 license = "BSD-3-Clause"
