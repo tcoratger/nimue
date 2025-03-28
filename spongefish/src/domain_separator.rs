@@ -176,7 +176,7 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
         // consecutive calls are merged into one
         match stack.pop_front() {
             None => Ok(stack),
-            Some(x) => Ok(Self::simplify_stack(VecDeque::from([x]), stack)),
+            Some(x) => Ok(Self::simplify_stack([x].into(), stack)),
         }
     }
 
@@ -212,7 +212,7 @@ impl<H: DuplexSpongeInterface<U>, U: Unit> DomainSeparator<H, U> {
     /// Create a [`crate::VerifierState`] instance from the domain separator and the protocol transcript (bytes).
     #[must_use]
     pub fn to_verifier_state<'a>(&self, transcript: &'a [u8]) -> crate::VerifierState<'a, H, U> {
-        crate::VerifierState::<H, U>::new(self, transcript)
+        crate::VerifierState::new(self, transcript)
     }
 }
 

@@ -83,9 +83,9 @@ impl<R: RngCore + CryptoRng> RngCore for ProverPrivateRng<R> {
 
 impl<H, U, R> ProverState<H, U, R>
 where
+    U: Unit,
     H: DuplexSpongeInterface<U>,
     R: RngCore + CryptoRng,
-    U: Unit,
 {
     pub fn new(domain_separator: &DomainSeparator<H, U>, csrng: R) -> Self {
         let hash_state = HashStateWithInstructions::new(domain_separator);
