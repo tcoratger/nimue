@@ -1,9 +1,11 @@
-use crate::domain_separator::DomainSeparator;
-use crate::duplex_sponge::{DuplexSpongeInterface, Unit};
-use crate::errors::DomainSeparatorMismatch;
-use crate::sho::HashStateWithInstructions;
-use crate::traits::{BytesToUnitDeserialize, UnitTranscript};
-use crate::DefaultHash;
+use crate::{
+    domain_separator::DomainSeparator,
+    duplex_sponge::{DuplexSpongeInterface, Unit},
+    errors::DomainSeparatorMismatch,
+    sho::HashStateWithInstructions,
+    traits::{BytesToUnitDeserialize, UnitTranscript},
+    DefaultHash,
+};
 
 /// [`VerifierState`] is the verifier state.
 ///
@@ -20,7 +22,7 @@ where
 }
 
 impl<'a, U: Unit, H: DuplexSpongeInterface<U>> VerifierState<'a, H, U> {
-    /// Creates a new [`VerifierState`] instance with the given sponge and IO Pattern.
+    /// Creates a new [`VerifierState`] instance with the given sponge and domain separator.
     ///
     /// The resulting object will act as the verifier in a zero-knowledge protocol.
     ///

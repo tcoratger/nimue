@@ -16,8 +16,10 @@
 //! `squeeze_unchecked` will use the squeeze oracle to output `output.len()` bytes,
 //! and finally `squeeze_end` will set the state `cv` to the current squeeze digest and length.
 //!
-use digest::crypto_common::generic_array::GenericArray;
-use digest::{core_api::BlockSizeUser, typenum::Unsigned, Digest, FixedOutputReset, Reset};
+use digest::{
+    core_api::BlockSizeUser, crypto_common::generic_array::GenericArray, typenum::Unsigned, Digest,
+    FixedOutputReset, Reset,
+};
 use zeroize::Zeroize;
 
 use super::DuplexSpongeInterface;

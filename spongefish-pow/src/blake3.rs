@@ -1,17 +1,13 @@
-use super::PowStrategy;
-use blake3;
-
-use {
-    blake3::{
-        guts::BLOCK_LEN,
-        platform::{Platform, MAX_SIMD_DEGREE},
-        IncrementCounter, OUT_LEN,
-    },
-    std::sync::atomic::{AtomicU64, Ordering},
+use blake3::{
+    self,
+    guts::BLOCK_LEN,
+    platform::{Platform, MAX_SIMD_DEGREE},
+    IncrementCounter, OUT_LEN,
 };
-
 #[cfg(feature = "parallel")]
 use rayon::broadcast;
+
+use super::PowStrategy;
 
 #[derive(Clone, Copy)]
 pub struct Blake3PoW {
@@ -70,6 +66,8 @@ impl PowStrategy for Blake3PoW {
     /// Finds the minimal `nonce` that satisfies the challenge.
     #[cfg(feature = "parallel")]
     fn solve(&mut self) -> Option<u64> {
+        use std::sync::atomic::{AtomicU64, Ordering};
+
         // Split the work across all available threads.
         // Use atomics to find the unique deterministic lowest satisfying nonce.
         let global_min = AtomicU64::new(u64::MAX);
@@ -144,11 +142,12 @@ impl Blake3PoW {
 
 #[test]
 fn test_pow_blake3() {
+    use spongefish::{DefaultHash, DomainSeparator};
+
     use crate::{
         ByteDomainSeparator, BytesToUnitDeserialize, BytesToUnitSerialize, PoWChallenge,
         PoWDomainSeparator,
     };
-    use spongefish::{DefaultHash, DomainSeparator};
 
     const BITS: f64 = 10.0;
 

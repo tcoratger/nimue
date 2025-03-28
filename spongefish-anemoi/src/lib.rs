@@ -3,9 +3,8 @@
 //! The main reason for this code not being deployed is that [anemoi](https://anemoi-hash.github.io/)'s Rust implementation
 //! is not published as a crate and thus `spongefish` cannot publish it along with a new release.
 use ark_ff::{Field, PrimeField};
-use zeroize::Zeroize;
-
 use spongefish::duplex_sponge::Permutation;
+use zeroize::Zeroize;
 
 #[derive(Clone, Zeroize)]
 pub struct AnemoiState<F: Field, const R: usize, const N: usize>([F; N]);
@@ -29,8 +28,7 @@ impl<F: Field, const R: usize, const N: usize> AsMut<[F]> for AnemoiState<F, R, 
 }
 
 pub type AnemoiBls12_381_2_1 = AnemoiState<anemoi::bls12_381::Felt, 2, 1>;
-use anemoi::bls12_381::anemoi_2_1::AnemoiBls12_381_2_1 as _AnemoiBls12_381_2_1;
-use anemoi::Anemoi;
+use anemoi::{bls12_381::anemoi_2_1::AnemoiBls12_381_2_1 as _AnemoiBls12_381_2_1, Anemoi};
 
 impl Permutation
     for AnemoiState<

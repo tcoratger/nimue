@@ -6,9 +6,9 @@ use ark_ff::PrimeField;
 use ark_std::UniformRand;
 use spongefish::codecs::arkworks_algebra::*;
 
-/// Extend the IO pattern with the Schnorr protocol.
+/// Extend the domain separator with the Schnorr protocol.
 trait SchnorrDomainSeparator<G: CurveGroup> {
-    /// Adds the entire Schnorr protocol to the IO pattern (statement and proof).
+    /// Adds the entire Schnorr protocol to the domain separator (statement and proof).
     fn add_schnorr_domsep(self) -> Self;
 }
 
@@ -67,7 +67,7 @@ where
     let K = P * k;
 
     // Add a sequence of points to the protocol transcript.
-    // An error is returned in case of failed serialization, or inconsistencies with the IO pattern provided (see below).
+    // An error is returned in case of failed serialization, or inconsistencies with the domain separator provided (see below).
     prover_state.add_points(&[K])?;
 
     // Fetch a challenge from the current transcript state.

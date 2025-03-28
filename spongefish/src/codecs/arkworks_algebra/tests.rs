@@ -1,11 +1,11 @@
+use ark_ff::Field;
+
 use crate::{
     ByteDomainSeparator, BytesToUnitDeserialize, BytesToUnitSerialize, DefaultHash,
     DomainSeparator, DuplexSpongeInterface, ProofResult, Unit, UnitToBytes, UnitTranscript,
 };
 
-use ark_ff::Field;
-
-/// Test that the algebraic hashes do use the IV generated from the IO Pattern.
+/// Test that the algebraic hashes do use the IV generated from the domain separator.
 fn check_iv_is_used<
     H: DuplexSpongeInterface<F>,
     F: Unit + Copy + Default + Eq + core::fmt::Debug,
@@ -41,10 +41,11 @@ where
 }
 
 fn test_arkworks_end_to_end<F: Field, H: DuplexSpongeInterface>() -> ProofResult<()> {
+    use rand::Rng;
+
     use crate::codecs::arkworks_algebra::{
         FieldToUnitDeserialize, FieldToUnitSerialize, UnitToField,
     };
-    use rand::Rng;
 
     let mut rng = ark_std::test_rng();
     // Generate elements for the transcript

@@ -30,8 +30,7 @@ pub(super) const fn bytes_uniform_modp(modulus_bits: u32) -> usize {
 /// is \(\frac{2r}{ab}(a-r)\).
 #[cfg(feature = "arkworks-algebra")]
 pub(super) fn random_bits_in_random_modp<const N: usize>(b: ark_ff::BigInt<N>) -> usize {
-    use ark_ff::BigInt;
-    use ark_ff::BigInteger;
+    use ark_ff::{BigInt, BigInteger};
     // XXX. is it correct to have num_bits+1 here?
     for n in (0..=b.num_bits()).rev() {
         // compute the remainder of b by 2^n

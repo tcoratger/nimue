@@ -1,6 +1,6 @@
 macro_rules! field_traits {
     ($Field:path) => {
-        /// Absorb and squeeze field elements to the IO pattern.
+        /// Absorb and squeeze field elements to the domain separator.
         pub trait FieldDomainSeparator<F: $Field> {
             #[must_use]
             fn add_scalars(self, count: usize, label: &str) -> Self;
@@ -50,7 +50,7 @@ macro_rules! field_traits {
 #[macro_export]
 macro_rules! group_traits {
     ($Group:path, Scalar: $Field:path) => {
-        /// Send group elements in the IO pattern.
+        /// Send group elements in the domain separator.
         pub trait GroupDomainSeparator<G: $Group> {
             #[must_use]
             fn add_points(self, count: usize, label: &str) -> Self;
@@ -61,7 +61,7 @@ macro_rules! group_traits {
             fn add_points(&mut self, input: &[G]) -> $crate::ProofResult<()>;
         }
 
-        /// Receive (and deserialize) group elements from the IO pattern.
+        /// Receive (and deserialize) group elements from the domain separator.
         ///
         /// The implementation of this trait **MUST** ensure that the points decoded are
         /// valid group elements.

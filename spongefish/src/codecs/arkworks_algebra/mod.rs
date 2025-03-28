@@ -117,7 +117,7 @@
 //! ```
 //! Now the above code should work with algebraic hashes such as `PoseidonHash` just as well as [`Keccak`][`crate::keccak::Keccak`].
 //!
-/// IO Pattern utilities.
+/// domain separator utilities.
 mod domain_separator;
 /// Add public elements (field or group elements) to the protocol transcript.
 mod verifier_messages;
@@ -131,10 +131,9 @@ mod prover_messages;
 #[cfg(test)]
 mod tests;
 
-pub use crate::traits::*;
 pub use crate::{
-    duplex_sponge::Unit, DomainSeparator, DuplexSpongeInterface, HashStateWithInstructions,
-    ProofError, ProofResult, ProverState, VerifierState,
+    duplex_sponge::Unit, traits::*, DomainSeparator, DuplexSpongeInterface,
+    HashStateWithInstructions, ProofError, ProofResult, ProverState, VerifierState,
 };
 
 super::traits::field_traits!(ark_ff::Field);

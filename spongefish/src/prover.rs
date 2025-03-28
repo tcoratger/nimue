@@ -1,11 +1,13 @@
 use rand::{CryptoRng, RngCore};
 
-use crate::duplex_sponge::Unit;
-use crate::{BytesToUnitSerialize, DomainSeparator, HashStateWithInstructions, UnitTranscript};
-
-use super::duplex_sponge::DuplexSpongeInterface;
-use super::keccak::Keccak;
-use super::{DefaultHash, DefaultRng, DomainSeparatorMismatch};
+use super::{
+    duplex_sponge::DuplexSpongeInterface, keccak::Keccak, DefaultHash, DefaultRng,
+    DomainSeparatorMismatch,
+};
+use crate::{
+    duplex_sponge::Unit, BytesToUnitSerialize, DomainSeparator, HashStateWithInstructions,
+    UnitTranscript,
+};
 
 /// [`ProverState`] is the prover state of an interactive proof (IP) system.
 /// It internally holds the **secret coins** of the prover for zero-knowledge, and
@@ -153,7 +155,7 @@ where
     /// # use spongefish::*;
     /// # use rand::RngCore;
     ///
-    /// // The IO Pattern does not need to specify the private coins.
+    /// // The domain separator does not need to specify the private coins.
     /// let domain_separator = DomainSeparator::<DefaultHash>::new("📝");
     /// let mut prover_state = domain_separator.to_prover_state();
     /// assert_ne!(prover_state.rng().next_u32(), 0, "You won the lottery!");

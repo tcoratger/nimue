@@ -8,8 +8,7 @@
 //! C = \langle a, G \rangle + \langle b, H \rangle + \langle a, b \rangle U
 //! $$
 
-use ark_ec::PrimeGroup;
-use ark_ec::{AffineRepr, CurveGroup, VariableBaseMSM};
+use ark_ec::{AffineRepr, CurveGroup, PrimeGroup, VariableBaseMSM};
 use ark_ff::Field;
 use ark_std::log2;
 use rand::rngs::OsRng;
@@ -19,10 +18,10 @@ use spongefish::codecs::arkworks_algebra::{
     ProofError, ProofResult, ProverState, UnitToField, VerifierState,
 };
 
-/// The IO Pattern of a bulleproof.
+/// The domain separator of a bulleproof.
 ///
 /// Defining this as a trait allows us to "attach" the bulletproof IO to
-/// the base class [`spongefish::DomainSeparator`] and other protocols to compose with the Bulletproof IO pattern.
+/// the base class [`spongefish::DomainSeparator`] and other protocols to compose with the Bulletproof domain separator.
 trait BulletproofDomainSeparator<G: CurveGroup> {
     fn bulletproof_statement(self) -> Self;
     fn add_bulletproof(self, len: usize) -> Self;
@@ -173,7 +172,7 @@ fn main() {
     // the vector size
     let size = 8;
 
-    // initialize the IO Pattern putting the domain separator ("example.com")
+    // initialize the domain separator putting the domain separator ("example.com")
     let domain_separator = DomainSeparator::new("example.com");
     // add the IO of the bulletproof statement
     let domain_separator =

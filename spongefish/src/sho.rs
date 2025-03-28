@@ -1,12 +1,12 @@
-use core::fmt;
-use core::marker::PhantomData;
+use core::{fmt, marker::PhantomData};
 use std::collections::vec_deque::VecDeque;
 
-use super::domain_separator::{DomainSeparator, Op};
-use super::duplex_sponge::DuplexSpongeInterface;
-use super::duplex_sponge::Unit;
-use super::errors::DomainSeparatorMismatch;
-use super::keccak::Keccak;
+use super::{
+    domain_separator::{DomainSeparator, Op},
+    duplex_sponge::{DuplexSpongeInterface, Unit},
+    errors::DomainSeparatorMismatch,
+    keccak::Keccak,
+};
 
 /// A stateful hash object that interfaces with duplex interfaces.
 #[derive(Clone)]
@@ -149,7 +149,7 @@ impl<U: Unit, H: DuplexSpongeInterface<U>> Drop for HashStateWithInstructions<H,
 impl<U: Unit, H: DuplexSpongeInterface<U>> fmt::Debug for HashStateWithInstructions<H, U> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         // Ensure that the state isn't accidentally logged,
-        // but provide the remaining IO Pattern for debugging.
+        // but provide the remaining domain separator for debugging.
         write!(
             f,
             "Sponge in duplex mode with committed verifier operations: {:?}",
